@@ -1,0 +1,10 @@
+{
+  "name": "ts-grpc",
+  "version": "1.0.0",
+  "description": "gRPC with Node.js and TypeScript",
+  "main": "index.js",
+  "repository": "git@github.com:RodrigoMattosoSilveira/ts-grpc.git",
+  "author": "Rodrigo Silveira <r3850365@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
