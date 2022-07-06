@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package clubMember;
+
+// The greeting service definition.
+service ClubMember {
+  // creates a club member
+  rpc CreateClubMember (IClubMember) returns (IClubMember);
+  // reads a club members
+  rpc ReadClubMember (IClubMemberId) returns (IClubMember);
+  // reads all club member
+  rpc ReadClubMembers (IClubMemberEmpty) returns (IClubMembers);
+  // Update all club member
+  rpc UpdateClubMember (IClubMember) returns (IClubMember);
+  // Delete all club member
+  rpc IClubMemberId (IClubMember) returns (IClubMember);
+
+}
+
+// The request message containing the user's name.
+message IClubMember {
+  string id = 1;
+  string first = 2;
+  string last = 3;
+  string email = 4;
+  string password = 5;
+  string cell = 6;
+  string rating = 7;
+  string status = 8;
+}
+message IClubMemberEmpty {}
+
+message IClubMembers {
+  repeated IClubMember data = 1 [packed=true];
+}
+
+message IClubMemberId {
+  string id = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+}
