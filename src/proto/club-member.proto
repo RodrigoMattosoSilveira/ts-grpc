@@ -14,7 +14,6 @@ service ClubMember {
   rpc UpdateClubMember (IClubMember) returns (IClubMember);
   // Delete all club member
   rpc IClubMemberId (IClubMember) returns (IClubMember);
-
 }
 
 // The request message containing the user's name.
