@@ -146,8 +146,9 @@ const readClubMember = (call, callback) => {
 }
 
 const readClubMembers = (call, callback) => {
-    const clubMembers = getClubMembers(CLUB_MEMBER_RAW_FN);
-    callback(null, clubMembers);
+    const clubMembers = [...getClubMembers(CLUB_MEMBER_RAW_FN)];
+    console.log(`Sending all club members: ${JSON.stringify(clubMembers)}`)
+    callback(null, {data: clubMembers});
 }
 
 const updateClubMember = (call, callback) => {
@@ -248,8 +249,6 @@ const getClubMembers = (clubMemberFn) => {
         console.log(err);
         process.exit(1)
     }
-    // const clubMembers = JSON.parse(data)
-    // return clubMembers;
     return JSON.parse(data);
 }
 
