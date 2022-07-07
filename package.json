@@ -7,6 +7,10 @@
   "author": "Rodrigo Silveira <r3850365@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "run-s": "node ./src/tsp-grpc-server.js",
+    "run-c": "node ./src/tsp-grpc-client.js readOne"
+  },
   "dependencies": {
     "@grpc/grpc-js": "^1.6.7",
     "@grpc/proto-loader": "^0.6.13",
