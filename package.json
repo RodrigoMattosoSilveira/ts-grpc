@@ -9,8 +9,12 @@
   "private": false,
   "dependencies": {
     "@grpc/grpc-js": "^1.6.7",
+    "@grpc/proto-loader": "^0.6.13",
     "dotenv": "^16.0.1",
-    "google-protobuf": "^3.20.1"
+    "google-protobuf": "^3.20.1",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.6",
+    "shortid": "^2.2.16"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
