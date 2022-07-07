@@ -147,7 +147,7 @@ const readClubMember = (call, callback) => {
 
 const readClubMembers = (call, callback) => {
     const clubMembers = [...getClubMembers(CLUB_MEMBER_RAW_FN)];
-    console.log(`Sending all club members: ${JSON.stringify(clubMembers)}`)
+    // console.log(`Sending all club members: ${JSON.stringify(clubMembers)}`)
     callback(null, {data: clubMembers});
 }
 
