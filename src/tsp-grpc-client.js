@@ -19,15 +19,7 @@ const clubMemberClient = new ClubMemberService(
 
 
 
-function runCreateClubMember(callback) {
-    function featureCallback(error, feature) {
-        if (error) {
-            callback(error);
-        }
-        else {
-            console.log(`Created ${JSON.stringify(feature)}`)
-        }
-    }
+function runCreateClubMember() {
     const clubMember = {
         first: `,Sergio`,
         last: `Craque`,
@@ -36,7 +28,10 @@ function runCreateClubMember(callback) {
         cell: `4082345678`,
         rating: 1974
     }
-    clubMemberClient.createClubMember(clubMember, featureCallback);
+    clubMemberClient.createClubMember(clubMember, (error, clubMember) => {
+        if (error) throw error;
+        console.log(`Created club member: ${JSON.stringify(clubMember)}`)
+    });
 }
 
 function runReadClubMember() {
@@ -93,7 +88,7 @@ function main() {
     switch (myArgs[0]) {
         case 'create':
             console.log(`Creating a record`);
-            // runCreateClubMember();
+            runCreateClubMember();
             break;
         case 'readOne':
             console.log(`Reading one record`);

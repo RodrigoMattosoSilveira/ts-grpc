@@ -115,7 +115,7 @@ const createClubMember = (call, callback) => {
             message: clubMember,
         }
     }
-    return callback(callbackObj);
+    callback(callbackObj.code, callbackObj.message);
 }
 
 /**
