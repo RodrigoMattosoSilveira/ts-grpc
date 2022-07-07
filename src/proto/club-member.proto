@@ -15,7 +15,7 @@ message IClubMember {
 message IClubMemberEmpty {}
 
 message IClubMembers {
-  repeated IClubMember data = 1 [packed=true];
+  repeated IClubMember data = 1;
 }
 
 message IClubMemberId {

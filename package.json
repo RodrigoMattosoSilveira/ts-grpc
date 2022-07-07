@@ -9,7 +9,11 @@
   "private": false,
   "scripts": {
     "run-s": "node ./src/tsp-grpc-server.js",
-    "run-c": "node ./src/tsp-grpc-client.js readOne"
+    "run-c-readOne": "node ./src/tsp-grpc-client.js readOne",
+    "run-c-readAll": "node ./src/tsp-grpc-client.js readAll",
+    "run-c-create": "node ./src/tsp-grpc-client.js create",
+    "run-c-update": "node ./src/tsp-grpc-client.js update",
+    "run-c-delete": "node ./src/tsp-grpc-client.js delete"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.6.7",

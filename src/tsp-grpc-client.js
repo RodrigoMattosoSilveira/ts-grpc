@@ -47,16 +47,11 @@ function runReadClubMember() {
     });
 }
 
-function runReadClubMembers(callback) {
-    function featureCallback(error, feature) {
-        if (error) {
-            callback(error);
-        }
-        else {
-            console.log(`Read club members: ${JSON.stringify(feature)}`)
-        }
-    }
-    clubMemberClient.readClubMembers(featureCallback);
+function runReadClubMembers() {
+    clubMemberClient.readClubMembers({}, (error, clubMembers) => {
+        if (error) throw error;
+        console.log(`Read all club members: ${JSON.stringify(clubMembers)}`)
+    });
 }
 
 function runUpdateClubMember(callback) {
@@ -106,7 +101,7 @@ function main() {
             break;
         case 'readAll':
             console.log(`Reading all records`);
-            // runReadClubMembers();
+            runReadClubMembers();
             break;
         case 'update':
             console.log(`Updating a record`);
