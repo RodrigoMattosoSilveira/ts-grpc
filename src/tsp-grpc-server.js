@@ -192,13 +192,12 @@ const updateClubMember = (call, callback) => {
             }
         }
     }
-    callback(callbackObj);
+    callback(callbackObj.code, callbackObj.message);
 }
 
 const deleteClubMember = (call, callback) => {
     let callbackObj;
     const errorMessage = clubMemberDeleteValidate(call.request);
-    let deletedClubMember;
     if (errorMessage !== ``) {
         // Must have the club member id to update it
         callbackObj = {
@@ -220,9 +219,8 @@ const deleteClubMember = (call, callback) => {
             }
         }
         else {
-            // Delete the target club member
-            deletedClubMember = clubMembers[targetClubMemberIndex];
-            clubMembers.splice(targetClubMemberIndex, 1); // 2nd parameter means remove one item only
+            // Delete the target club member; we do not delete a club member, but disable it
+            clubMembers[targetClubMemberIndex][`status`] = false;
 
             // save the updated club members
             saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
@@ -230,11 +228,11 @@ const deleteClubMember = (call, callback) => {
             // send reply with deleted club member
             callbackObj = {
                 code: null,
-                message: deletedClubMember
+                message: clubMembers[targetClubMemberIndex]
             }
         }
     }
-    callback(callbackObj);
+    callback(callbackObj.code, callbackObj.message);
 }
 
 // Read Club Members

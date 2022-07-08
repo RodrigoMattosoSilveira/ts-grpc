@@ -35,6 +35,6 @@ service ClubMemberService {
   rpc ReadClubMembers (IClubMemberEmpty) returns (IClubMembers);
   // Update all club member
   rpc UpdateClubMember (IClubMember) returns (IClubMember);
-  // Delete all club member
-  rpc IClubMemberId (IClubMember) returns (IClubMember);
+  // Delete s club member
+  rpc DeleteClubMember (IClubMember) returns (IClubMember);
 }

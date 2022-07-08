@@ -62,20 +62,18 @@ function runUpdateClubMember(callback) {
         id: `SCnr4kjwS-7`,
         rating: 1609
     }
-    clubMemberClient.updateClubMember(clubMember, featureCallback);
+    clubMemberClient.updateClubMember(clubMember, (error, clubMember) => {
+        if (error) throw error;
+        console.log(`Updated club member: ${JSON.stringify(clubMember)}`)
+    });
 }
 
 function runDeleteClubMember(callback) {
-    function featureCallback(error, feature) {
-        if (error) {
-            callback(error);
-        }
-        else {
-            console.log(`Deleted club member: ${JSON.stringify(feature)}`)
-        }
-    }
-    const clubMemberId = `ZasAIJcZQLR`;
-    clubMemberClient.deleteClubMember(clubMemberId, featureCallback);
+     const clubMemberId = `ZasAIJcZQLR`;
+    clubMemberClient.deleteClubMember({id: clubMemberId}, (error, clubMember) => {
+        if (error) throw error;
+        console.log(`Read club member: ${JSON.stringify(clubMember)}`)
+    });
 }
 
 /**
@@ -100,11 +98,11 @@ function main() {
             break;
         case 'update':
             console.log(`Updating a record`);
-            // runUpdateClubMember();
+            runUpdateClubMember();
             break;
         case 'delete':
             console.log(`Deleting a record`);
-            // runDeleteClubMember();
+            runDeleteClubMember();
             break;
         default:
             console.log('Sorry, that is not something I know how to do.');
