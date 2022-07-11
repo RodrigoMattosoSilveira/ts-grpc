@@ -1,7 +1,6 @@
 import { MClubMember } from "../proto/club-member_pb";
 import { client } from "./utils";
 
-// export const runCreateClubMember = (): void => {
 const updateClubMember = (clubMember: MClubMember): any => {
     return new Promise<MClubMember>((resolve, reject) => {
         const requestUpdate = new MClubMember();

@@ -8,12 +8,12 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "run-s": "node ./src/tsp-grpc-server.js",
-    "run-c-readOne": "node ./src/tsp-grpc-client.js readOne",
-    "run-c-readAll": "node ./src/tsp-grpc-client.js readAll",
-    "run-c-create": "node ./src/tsp-grpc-client.js create",
-    "run-c-update": "node ./src/tsp-grpc-client.js update",
-    "run-c-delete": "node ./src/tsp-grpc-client.js delete",
+    "run-s": "ts-node ./src/server/index.ts",
+    "run-c-readOne": "ts-node ./src/client/index readOne",
+    "run-c-readAll": "ts-node ./src/client/index  readAll",
+    "run-c-create": "ts-node ./src/client/index  create",
+    "run-c-update": "ts-node ./src/client/index  update",
+    "run-c-delete": "ts-node ./src/client/index  delete",
     "build": "sh src/proto/build.sh",
     "server": "ts-node src/server/index.ts",
     "client": "ts-node src/client/index.ts"

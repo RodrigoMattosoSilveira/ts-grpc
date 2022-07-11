@@ -12,7 +12,7 @@ const createClubMember = (clubMember: MClubMember): any => {
         request.setCell(clubMember.getCell());
         request.setRating(clubMember.getRating());
 
-        client.createClubMember(request, (err, clubMember) => {
+        client.createClubMember(request, (err: any, clubMember: any) => {
             if (err) reject(err);
             else resolve(clubMember);
         });
