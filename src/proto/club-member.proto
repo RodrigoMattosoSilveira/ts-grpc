@@ -10,8 +10,8 @@ message MClubMember {
   string email = 4;
   string password = 5;
   string cell = 6;
-  string rating = 7;
-  string status = 8;
+  int32 rating = 7;
+  bool status = 8;
 }
 
 message MClubMemberEmpty {}
@@ -20,20 +20,20 @@ message MClubMembers {
   repeated MClubMember data = 1;
 }
 
-message MClubMemberRequest {
+message MClubMemberId {
   string id = 1;
 }
 
 // The greeting service definition
-service SvcClubMember {
+service SClubMember {
   // creates a club member
   rpc CreateClubMember (MClubMember) returns (MClubMember);
   // reads a club member
-  rpc ReadClubMember (MClubMemberRequest) returns (MClubMember);
+  rpc ReadClubMember (MClubMemberId) returns (MClubMember);
   // reads all club members
-  rpc ReadClubMembers (MClubMemberEmpty) returns (stream MClubMember) {};
+  rpc ReadClubMembers (MClubMemberEmpty) returns (stream MClubMember);
   // Update all club member
   rpc UpdateClubMember (MClubMember) returns (MClubMember);
   // Delete s club member
-  rpc DeleteClubMember (MClubMemberRequest) returns (MClubMember);
+  rpc DeleteClubMember (MClubMemberId) returns (MClubMember);
 }
