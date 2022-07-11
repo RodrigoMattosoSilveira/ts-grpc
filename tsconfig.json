@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es6ƒmode",
     "module": "commonjs",
     "lib": ["es6", "es2015", "dom"],
     "moduleResolution": "node",
@@ -13,6 +13,7 @@
     "noUnusedParameters": true /* Report errors on unused parameters. */,
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */,
     "importHelpers": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

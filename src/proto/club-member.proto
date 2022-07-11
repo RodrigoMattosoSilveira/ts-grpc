@@ -1,7 +1,9 @@
 syntax = "proto3";
 
+package clubMember;
+
 // The request message containing the user's name.
-message IClubMember {
+message MClubMember {
   string id = 1;
   string first = 2;
   string last = 3;
@@ -12,29 +14,26 @@ message IClubMember {
   string status = 8;
 }
 
-message IClubMemberEmpty {}
+message MClubMemberEmpty {}
 
-message IClubMembers {
-  repeated IClubMember data = 1;
+message MClubMembers {
+  repeated MClubMember data = 1;
 }
 
-message IClubMemberId {
+message MClubMemberRequest {
   string id = 1;
 }
 
-message HelloResponse {
-  string message = 1;
-}
 // The greeting service definition
-service ClubMemberService {
+service SvcClubMember {
   // creates a club member
-  rpc CreateClubMember (IClubMember) returns (IClubMember);
-  // reads a club members
-  rpc ReadClubMember (IClubMemberId) returns (IClubMember);
-  // reads all club member
-  rpc ReadClubMembers (IClubMemberEmpty) returns (IClubMembers);
+  rpc CreateClubMember (MClubMember) returns (MClubMember);
+  // reads a club member
+  rpc ReadClubMember (MClubMemberRequest) returns (MClubMember);
+  // reads all club members
+  rpc ReadClubMembers (MClubMemberEmpty) returns (stream MClubMember) {};
   // Update all club member
-  rpc UpdateClubMember (IClubMember) returns (IClubMember);
+  rpc UpdateClubMember (MClubMember) returns (MClubMember);
   // Delete s club member
-  rpc DeleteClubMember (IClubMember) returns (IClubMember);
+  rpc DeleteClubMember (MClubMemberRequest) returns (MClubMember);
 }
