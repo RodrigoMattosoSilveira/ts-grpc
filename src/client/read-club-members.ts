@@ -1,10 +1,9 @@
-import { Empty } from "google-protobuf/google/protobuf/empty_pb";
-import { MClubMember } from "../proto/club-member_pb";
+import {MClubMember, MClubMemberEmpty} from "../proto/club-member_pb";
 import { client } from "./utils";
 
-const readClubMembers = (): any => {
+const readClubMembers = (empty: MClubMemberEmpty): any => {
     return new Promise<MClubMember[]>((resolve, reject) => {
-        const stream = client.readClubMembers(new Empty());
+        const stream = client.readClubMembers(empty);
         const clubMembers: MClubMember[] = [];
         stream.on("data", (clubMember: MClubMember) => clubMembers.push(clubMember));
         stream.on("error", reject);

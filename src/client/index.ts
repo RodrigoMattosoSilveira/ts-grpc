@@ -4,7 +4,7 @@ import readClubMembers from "./read-club-members";
 import updateClubMember from "./update-club-member";
 import deleteClubMember from "./delete-club-member";
 import {TClubMember, TClubMemberUpdate} from "../types/club-member-type";
-import {MClubMember} from "../proto/club-member_pb";
+import {MClubMember, MClubMemberEmpty} from "../proto/club-member_pb";
 import {m_to_t} from "../utils/utils";
 
 function runCreateClubMember() {
@@ -18,18 +18,6 @@ function runCreateClubMember() {
     createClubMember(mClubMember).then((newClubMember: MClubMember) => {
         console.log(`created club member: ${JSON.stringify(newClubMember)}`)
     })
-    // const newClubMember: MClubMember = createClubMember(mClubMember);
-    // const newClubMemberT: TClubMember = {
-    //     id: newClubMember.getId(),
-    //     first: newClubMember.getFirst(),
-    //     last: newClubMember.getLast(),
-    //     email: newClubMember.getEmail(),
-    //     password: newClubMember.getPassword(),
-    //     cell: newClubMember.getCell(),
-    //     rating: newClubMember.getRating(),
-    //     status: newClubMember.getStatus()
-    // }
-    // console.log(`created club member: ${JSON.stringify(newClubMemberT)}`)
 }
 
 function runReadClubMember(clubMemberId: string) {
@@ -42,9 +30,16 @@ function runReadClubMember(clubMemberId: string) {
         })
     }
 
-function runReadClubMembers() {
-    const clubMembers = readClubMembers()
-    console.log(`read ${clubMembers.length}`);
+function runReadClubMembers(empty: MClubMemberEmpty): any {
+    readClubMembers(empty).
+        then((clubMembers: any) => {
+            clubMembers.forEach((clubMember: MClubMember) => {
+                console.log(`read club members: ${JSON.stringify(m_to_t(clubMember))}`)
+            })
+        }).
+        catch((error: any) => {
+            console.log(`error reading club members: ${error}`)
+        });
 }
 
 function runUpdateClubMember(MUpdateClubMember: any) {
@@ -89,7 +84,6 @@ function runDeleteClubMember(clubMemberId: string) {
     console.log(`deleted club member: ${JSON.stringify(deletedClubMemberT)}`)
 }
 
-
 /**
  * Run a demo based on the argument
  */
@@ -108,7 +102,7 @@ function main() {
             break;
         case 'readAll':
             console.log(`Reading all records`);
-            runReadClubMembers();
+            runReadClubMembers(new MClubMemberEmpty());
             break;
         case 'update':
             console.log(`Updating a record`);
