@@ -15,9 +15,13 @@ function runCreateClubMember() {
     mClubMember.setEmail(`Sergio.Craque@yahoo.com`);
     mClubMember.setCell(`4082345678`);
     mClubMember.setRating(1974);
-    createClubMember(mClubMember).then((newClubMember: MClubMember) => {
-        console.log(`created club member: ${JSON.stringify(newClubMember)}`)
-    })
+    createClubMember(mClubMember).
+        then((newClubMember: MClubMember) => {
+            console.log(`created club member: ${JSON.stringify(m_to_t(newClubMember))}`)
+        }).
+        catch((error: any) => {
+            console.log(`error reading club member: ${error}`)
+        })
 }
 
 function runReadClubMember(clubMemberId: string) {
