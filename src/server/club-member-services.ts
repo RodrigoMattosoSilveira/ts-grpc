@@ -10,13 +10,14 @@ import { TClubMember } from "../types/club-member-type";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import * as fs from "fs";
 import * as shortid from "shortid";
+import {m_to_t, t_to_m} from "../utils/utils";
 
 const CLUB_MEMBER_RAW_FN = __dirname + '/../../data/club-members-raw.json';
 const CLUB_MEMBER_EDITED_FN = __dirname + '/../../data/club-members-edited.json';
 
 export class ClubMemberServices implements ISClubMemberServer {
     createClubMember(call: ServerUnaryCall<MClubMember, any>, callback: sendUnaryData<MClubMember>) {
-        const clubMemberObject: TClubMember = this.fromClubMemberGrpcObjectToClubMemberObj(call.request)
+        const clubMemberObject: TClubMember = m_to_t(call.request)
         const errorMessage = this.clubMemberCreateValidate(clubMemberObject);
         // let callbackObj;
         if (errorMessage !== ``) {
@@ -45,8 +46,8 @@ export class ClubMemberServices implements ISClubMemberServer {
             }
             const clubMembers = [...this.getClubMembers(CLUB_MEMBER_RAW_FN), clubMember];
             this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers);
-            const clubMemberGrpcObject = this.fromClubMemberObjToClubMemberGrpcObject(clubMember)
-            callback(null, clubMemberGrpcObject);
+            const clubMemberGrpcObject = t_to_m(clubMember);
+                callback(null, clubMemberGrpcObject);
             return
         }
     }
@@ -63,23 +64,26 @@ export class ClubMemberServices implements ISClubMemberServer {
             callback(error, null);
             return;
         }
-        const clubMemberGrpcObject = this.fromClubMemberObjToClubMemberGrpcObject(clubMember)
-        console.log(`readClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);
+        // const clubMemberGrpcObject = this.fromClubMemberObjToClubMemberGrpcObject(clubMember)
+        const clubMemberGrpcObject = t_to_m(clubMember)
+            console.log(`readClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);
         callback(null, clubMemberGrpcObject);
         // callback(null, clubMember);
     }
     readClubMembers(call: ServerWritableStream<Empty, any>) {
-        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBER_RAW_FN)
+        console.log(`getUsers: streaming all club members.`);
 
+        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBER_RAW_FN)
         clubMembers.forEach((clubMember: TClubMember) => {
-            const clubMemberGrpcObject = this.fromClubMemberObjToClubMemberGrpcObject(clubMember)
+
+            const clubMemberGrpcObject = t_to_m(clubMember)
             call.write(clubMemberGrpcObject)
         })
-        console.log(`readClubMember: returning ${clubMembers.length} club members`);
+        console.log(`readClubMembers: returning ${clubMembers.length} club members`);
         call.end();
     }
     updateClubMember(call: ServerUnaryCall<MClubMember, any>, callback: sendUnaryData<MClubMember>) {
-        const clubMemberObject: TClubMember = this.fromClubMemberGrpcObjectToClubMemberObj(call.request)
+        const clubMemberObject: TClubMember = m_to_t(call.request);
         const errorMessage = this.clubMemberUpdateValidate(clubMemberObject);
         if (errorMessage !== ``) {
             const error: {name: string, message: string} = {
@@ -131,7 +135,7 @@ export class ClubMemberServices implements ISClubMemberServer {
                 this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
 
                 // send reply with updated club member
-                const clubMemberGrpcObject = this.fromClubMemberObjToClubMemberGrpcObject(clubMembers[targetClubMemberIndex])
+                const clubMemberGrpcObject = t_to_m(clubMembers[targetClubMemberIndex]);
                 console.log(`updateClubMember: returning ${clubMembers[targetClubMemberIndex].first} (id: ${clubMembers[targetClubMemberIndex].id}).`);
                 callback(null, clubMemberGrpcObject);
             }
@@ -157,8 +161,8 @@ export class ClubMemberServices implements ISClubMemberServer {
         // save the updated club members
         this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
 
-        const clubMemberGrpcObject = this.fromClubMemberObjToClubMemberGrpcObject(clubMembers[targetClubMemberIndex])
-        console.log(`deleteClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);
+        const clubMemberGrpcObject = t_to_m(clubMembers[targetClubMemberIndex])
+            console.log(`deleteClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);
         callback(null, clubMemberGrpcObject);
     }
     clubMemberCreateValidate = (clubMember: TClubMember) => {
@@ -207,38 +211,6 @@ export class ClubMemberServices implements ISClubMemberServer {
         return errorMessage;
     }
 
-    /**
-     * Returns a CLub Member GRPC object from a Club Member object
-     * @param clubMember
-     */
-    fromClubMemberObjToClubMemberGrpcObject = (clubMember: TClubMember): MClubMember => {
-        const clubMemberGrpcObject: MClubMember = new MClubMember();
-        clubMemberGrpcObject.setId(clubMember.id);
-        clubMemberGrpcObject.setFirst(clubMember.first);
-        clubMemberGrpcObject.setLast(clubMember.last);
-        clubMemberGrpcObject.setPassword(clubMember.password);
-        clubMemberGrpcObject.setCell(clubMember.cell);
-        clubMemberGrpcObject.setEmail(clubMember.email);
-        clubMemberGrpcObject.setRating(clubMember.rating);
-        clubMemberGrpcObject.setStatus(clubMember.status);
-        return clubMemberGrpcObject;
-    }
-    /**
-     * Returns a Club Member Object from a CLub Member GRPC Object
-     * @param clubMember
-     */
-    fromClubMemberGrpcObjectToClubMemberObj = (clubMember: MClubMember): TClubMember => {
-        return {
-            id: clubMember.getId(),
-            first: clubMember.getFirst(),
-            last: clubMember.getLast(),
-            password: clubMember.getPassword(),
-            cell: clubMember.getCell(),
-            email: clubMember.getEmail(),
-            rating: clubMember.getRating(),
-            status: clubMember.getStatus(),
-        }
-    }
     getClubMembers = (clubMemberFn: string) => {
         let data = '';
         try {

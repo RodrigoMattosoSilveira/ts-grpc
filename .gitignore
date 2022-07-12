@@ -103,3 +103,7 @@ dist
 # TernJS port file
 .tern-port
 /data/club-members-edited.json
+/src/proto/club-member_grpc_pb.d.ts
+/src/proto/club-member_grpc_pb.js
+/src/proto/club-member_pb.d.ts
+/src/proto/club-member_pb.js
