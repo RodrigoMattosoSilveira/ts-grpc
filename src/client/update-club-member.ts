@@ -1,22 +1,13 @@
-import { MClubMember } from "../proto/club-member_pb";
+import {MClubMember, MClubMemberUpdate} from "../proto/club-member_pb";
 import { client } from "./utils";
 
-const updateClubMember = (clubMember: MClubMember): any => {
+const updateClubMember = (clubMemberU: MClubMemberUpdate): any => {
     return new Promise<MClubMember>((resolve, reject) => {
-        const requestUpdate = new MClubMember();
-        requestUpdate.setId(clubMember.getId());
-        requestUpdate.setFirst(clubMember.getFirst());
-        requestUpdate.setLast(clubMember.getLast());
-        requestUpdate.setPassword(clubMember.getPassword());
-        requestUpdate.setCell(clubMember.getCell());
-        requestUpdate.setRating(clubMember.getRating());
-        requestUpdate.setStatus(clubMember.getStatus());
-
-        client.updateClubMember(requestUpdate, (err, clubMember) => {
+        console.log(`client - Calling updateClubMember - ${clubMemberU.toString()}`)
+        client.updateClubMember(clubMemberU, (err: any, updatedClubMember: MClubMember) => {
             if (err) reject(err);
-            else resolve(clubMember);
+            else resolve(updatedClubMember);
         });
     });
 }
-
 export default updateClubMember;

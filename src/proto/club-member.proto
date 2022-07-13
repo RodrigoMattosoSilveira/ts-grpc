@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package clubMember;
 
-// The request message containing the user's name.
+// All attributes must be present, when creating or reading club members
 message MClubMember {
   string id = 1;
   string first = 2;
@@ -12,6 +12,18 @@ message MClubMember {
   string cell = 6;
   int32 rating = 7;
   bool status = 8;
+}
+
+//  The id is required, and all other attributes are optional, when updating a club member
+message MClubMemberUpdate {
+  string id = 1;
+  optional string first = 2;
+  optional string last = 3;
+  optional string email = 4;
+  optional string password = 5;
+  optional string cell = 6;
+  optional int32 rating = 7;
+  optional bool status = 8;
 }
 
 message MClubMemberEmpty {}
@@ -33,7 +45,7 @@ service SClubMember {
   // reads all club members
   rpc ReadClubMembers (MClubMemberEmpty) returns (stream MClubMember);
   // Update all club member
-  rpc UpdateClubMember (MClubMember) returns (MClubMember);
+  rpc UpdateClubMember (MClubMemberUpdate) returns (MClubMember);
   // Delete s club member
   rpc DeleteClubMember (MClubMemberId) returns (MClubMember);
 }

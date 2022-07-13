@@ -14,7 +14,7 @@
     "run-c-create": "ts-node ./src/client/index  create",
     "run-c-update": "ts-node ./src/client/index  update",
     "run-c-delete": "ts-node ./src/client/index  delete",
-    "build": "sh src/proto/build.sh",
+    "proto": "sh src/proto/build.sh",
     "server": "ts-node src/server/index.ts",
     "client": "ts-node src/client/index.ts"
   },

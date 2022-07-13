@@ -1,20 +1,16 @@
 import { MClubMember } from "../proto/club-member_pb";
+import { TClubMember } from "../types/club-member-type"
 import { client } from "./utils";
+import { t_to_m } from "../utils/utils"
 
-// export const runCreateClubMember = (): void => {
-const createClubMember = (clubMember: MClubMember): any => {
+// GRPC Client handler to create a Club Member
+const createClubMember = (tClubMember: TClubMember): any => {
+    console.log(`client/createClubMember - Creating a record`);
     return new Promise<MClubMember>((resolve, reject) => {
-        const request = new MClubMember();
-        request.setId(clubMember.getId());
-        request.setFirst(clubMember.getFirst());
-        request.setLast(clubMember.getLast());
-        request.setPassword(clubMember.getPassword());
-        request.setCell(clubMember.getCell());
-        request.setRating(clubMember.getRating());
-
-        client.createClubMember(request, (err: any, clubMember: any) => {
+        const mClubMember: MClubMember = t_to_m(tClubMember)
+        client.createClubMember(mClubMember, (err: any, createdClubMember: any) => {
             if (err) reject(err);
-            else resolve(clubMember);
+            else resolve(createdClubMember);
         });
     });
 }

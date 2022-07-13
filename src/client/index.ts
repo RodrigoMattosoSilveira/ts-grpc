@@ -5,17 +5,12 @@ import updateClubMember from "./update-club-member";
 import deleteClubMember from "./delete-club-member";
 import {TClubMember, TClubMemberUpdate} from "../types/club-member-type";
 import {MClubMember, MClubMemberEmpty} from "../proto/club-member_pb";
-import {m_to_t} from "../utils/utils";
+import {m_to_t, tUpdate_to_mUpdate} from "../utils/utils";
+import shortid from "shortid";
 
-function runCreateClubMember() {
-    const mClubMember = new MClubMember();
-    mClubMember.setFirst(`Sergio`);
-    mClubMember.setLast(`Craque`);
-    mClubMember.setPassword(`P4yUK9wYUzKZ`);
-    mClubMember.setEmail(`Sergio.Craque@yahoo.com`);
-    mClubMember.setCell(`4082345678`);
-    mClubMember.setRating(1974);
-    createClubMember(mClubMember).
+function runCreateClubMember(tClubMember: TClubMember) {
+    console.log(`client/runCreateClubMember - Creating a record`);
+    createClubMember(tClubMember).
         then((newClubMember: MClubMember) => {
             console.log(`created club member: ${JSON.stringify(m_to_t(newClubMember))}`)
         }).
@@ -46,31 +41,18 @@ function runReadClubMembers(empty: MClubMemberEmpty): any {
         });
 }
 
-function runUpdateClubMember(MUpdateClubMember: any) {
-    const mClubMember = new MClubMember();
+function runUpdateClubMember(updateClubMemberU: TClubMemberUpdate) {
+    // console.log(`client - runUpdateClubMember - 1: ${JSON.stringify(clubMember)}`);
+    const mClubMember = tUpdate_to_mUpdate(updateClubMemberU)
+    // console.log(`client - runUpdateClubMember 2: ${mClubMember.toString()}`);
 
-    mClubMember.setId(MUpdateClubMember.id);
-    MUpdateClubMember.hasOwnProperty('first') ? mClubMember.setFirst(MUpdateClubMember.fist) : false;
-    MUpdateClubMember.hasOwnProperty('last') ? mClubMember.setLast(MUpdateClubMember.last) : false;
-    MUpdateClubMember.hasOwnProperty('password') ? mClubMember.setPassword(MUpdateClubMember.password) : false;
-    MUpdateClubMember.hasOwnProperty('email') ? mClubMember.setEmail(MUpdateClubMember.email) : false;
-    MUpdateClubMember.hasOwnProperty('cell') ? mClubMember.setCell(MUpdateClubMember.cell) : false;
-    MUpdateClubMember.hasOwnProperty('rating') ? mClubMember.setRating(MUpdateClubMember.rating) : false;
-    MUpdateClubMember.hasOwnProperty('status') ? mClubMember.setStatus(MUpdateClubMember.status) : false;
-
-    const updatedClubMember: MClubMember = updateClubMember(mClubMember);
-    const updatedClubMemberT: TClubMember = {
-        id: updatedClubMember.getId(),
-        first: updatedClubMember.getFirst(),
-        last: updatedClubMember.getLast(),
-        email: updatedClubMember.getEmail(),
-        password: updatedClubMember.getPassword(),
-        cell: updatedClubMember.getCell(),
-        rating: updatedClubMember.getRating(),
-        status: updatedClubMember.getStatus()
-    }
-
-    console.log(`updated club member: ${JSON.stringify(updatedClubMemberT)}`)
+    updateClubMember(mClubMember).
+        then((updatedClubMember: MClubMember) => {
+            console.log(`updated club member: ${JSON.stringify(m_to_t(updatedClubMember))}`)
+        }).
+        catch((error: any) => {
+            console.log(`error updating club member: ${error}`)
+        })
 }
 
 function runDeleteClubMember(clubMemberId: string) {
@@ -88,6 +70,54 @@ function runDeleteClubMember(clubMemberId: string) {
     console.log(`deleted club member: ${JSON.stringify(deletedClubMemberT)}`)
 }
 
+// TODO re-integrate them into the flow, as close to the flow start as possible
+// const clubMemberCreateValidate = (clubMember: TClubMember) => {
+//     let errorMessage = ``;
+//
+//     // Must have first name
+//     if (!clubMember.hasOwnProperty('first')) {
+//         const msg = `Missing first name`;
+//         errorMessage += errorMessage === "" ? msg : `\n` + msg;
+//     }
+//
+//     // Must have last name
+//     if (!clubMember.hasOwnProperty('last')) {
+//         const msg = `Missing first name`;
+//         errorMessage += errorMessage === "" ? msg : `\n` + msg;
+//     }
+//
+//     // Must have email address
+//     if (!clubMember.hasOwnProperty('email')) {
+//         const msg = `Missing first name`;
+//         errorMessage += errorMessage === "" ? msg : `\n` + msg;
+//     }
+//
+//     // Must have password
+//     if (!clubMember.hasOwnProperty('password')) {
+//         const msg = `Missing first name`;
+//         errorMessage += errorMessage === "" ? msg : `\n` + msg;
+//     }
+//
+//     // Must have cell phone
+//     if (!clubMember.hasOwnProperty('cell')) {
+//         const msg = `Missing first name`;
+//         errorMessage += errorMessage === "" ? msg : `\n` + msg;
+//     }
+//     return errorMessage;
+// }
+//
+// const clubMemberUpdateValidate = (clubMember: TClubMember) => {
+//     let errorMessage = ``;
+//
+//     // Must have id
+//     if (!clubMember.hasOwnProperty('id')) {
+//         const msg = `Missing id`;
+//         errorMessage += errorMessage === "" ? msg : `\n` + msg;
+//     }
+//     return errorMessage;
+// }
+
+
 /**
  * Run a demo based on the argument
  */
@@ -97,11 +127,23 @@ function main() {
 
     switch (myArgs[0]) {
         case 'create':
-            console.log(`Creating a record`);
-            runCreateClubMember();
+            console.log(`client/main - Creating a record`);
+            const tClubMember: TClubMember = {
+                id: shortid.generate(),
+                first: "Sergio",
+                last: "Craque",
+                password: "P4yUK9wYUzKZ",
+                email: "Sergio.Craque@yahoo.com",
+                cell: "4082345678",
+                rating: 1974,
+                status: true
+            }
+            // TODO find the best place to validate the input
+            runCreateClubMember(tClubMember);
             break;
         case 'readOne':
             console.log(`Reading one record`);
+            // TODO find the best place to validate the input
             runReadClubMember(`ZasAIJcZQLR`);
             break;
         case 'readAll':
@@ -110,14 +152,16 @@ function main() {
             break;
         case 'update':
             console.log(`Updating a record`);
-            const updateClubMember: TClubMemberUpdate = {
-                id: `SCnr4kjwS`,
-                rating: 1609
+            // TODO find the best place to validate the input
+            const updateClubMemberU: TClubMemberUpdate = {
+                "id": "SCnr4kjwS-7",
+                "rating": 1953
             }
-            runUpdateClubMember(updateClubMember);
+            runUpdateClubMember(updateClubMemberU);
             break;
         case 'delete':
             console.log(`Deleting a record`);
+            // TODO find the best place to validate the input
             runDeleteClubMember(`ZasAIJcZQLR`);
             break;
         default:

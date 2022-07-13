@@ -10,7 +10,7 @@ export type TClubMember = {
 }
 
 export type TClubMemberUpdate = {
-    id: string; // 8 chars, random string
+    id: string;
     first?: string;
     last?: string;
     email?: string;
