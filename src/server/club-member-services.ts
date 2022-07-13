@@ -61,49 +61,6 @@ export class ClubMemberServices implements ISClubMemberServer {
         const clubMembers = this.getClubMembers(CLUB_MEMBER_RAW_FN);
 
         const targetClubMemberId: string = call.request.getId();
-        // const targetClubMemberIndex = clubMembers.findIndex((clubMember: TClubMember) => {
-        //     return clubMember.id === targetClubMemberId;
-        // })
-        // if (targetClubMemberIndex === -1) {
-        //     // send reply indicating we did not fund the target club member
-        //     const error: {name: string, message: string} = {
-        //         name: `NOT_FOUND`,
-        //         message: `server/updateClubMember - club member id ${targetClubMemberId} not found`
-        //     };
-        //     callback(error, null);
-        //     return;
-        // }
-        // else {
-        //     // Update the target club member
-        //     if (call.request.hasFirst()) {
-        //         clubMembers[targetClubMemberIndex]['first'] = call.request.getFirst();
-        //     }
-        //     if (call.request.hasLast()) {
-        //         clubMembers[targetClubMemberIndex]['last'] = call.request.getLast();
-        //     }
-        //     if (call.request.hasEmail()) {
-        //         clubMembers[targetClubMemberIndex]['email'] = call.request.getEmail();
-        //     }
-        //     if (call.request.hasPassword()) {
-        //         clubMembers[targetClubMemberIndex]['password'] = call.request.getPassword();
-        //     }
-        //     if (call.request.hasCell()) {
-        //         clubMembers[targetClubMemberIndex]['cell'] = call.request.getCell();
-        //     }
-        //     if (call.request.hasRating()) {
-        //         clubMembers[targetClubMemberIndex]['rating'] = call.request.getRating();
-        //     }
-        //     if (call.request.hasStatus()) {
-        //         clubMembers[targetClubMemberIndex]['status'] = call.request.getStatus();
-        //     }
-        //     // Save the updated club members
-        //     this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
-        //
-        //     // send reply with updated club member
-        //     const clubMemberGrpcObject = t_to_m(clubMembers[targetClubMemberIndex]);
-        //     console.log(`updateClubMember: returning ${clubMembers[targetClubMemberIndex].first} (id: ${clubMembers[targetClubMemberIndex].id}).`);
-        //     callback(null, clubMemberGrpcObject);
-        // }
         const targetClubMember = clubMembers.find((clubMember: TClubMember) => {
             return clubMember.id === targetClubMemberId;
         })
@@ -169,8 +126,9 @@ export class ClubMemberServices implements ISClubMemberServer {
         this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
 
         const clubMemberGrpcObject = t_to_m(clubMembers[targetClubMemberIndex])
-            console.log(`deleteClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);
+        console.log(`deleteClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);
         callback(null, clubMemberGrpcObject);
+        return;
     }
 
     // Retrieve club members

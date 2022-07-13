@@ -56,18 +56,13 @@ function runUpdateClubMember(updateClubMemberU: TClubMemberUpdate) {
 }
 
 function runDeleteClubMember(clubMemberId: string) {
-    const clubMember: MClubMember = deleteClubMember(clubMemberId);
-    const deletedClubMemberT: TClubMember = {
-        id: clubMember.getId(),
-        first: clubMember.getFirst(),
-        last: clubMember.getLast(),
-        email: clubMember.getEmail(),
-        password: clubMember.getPassword(),
-        cell: clubMember.getCell(),
-        rating: clubMember.getRating(),
-        status: clubMember.getStatus()
-    }
-    console.log(`deleted club member: ${JSON.stringify(deletedClubMemberT)}`)
+    deleteClubMember(clubMemberId).
+        then((deletedClubMember: MClubMember) => {
+            console.log(`deactivated club member: ${JSON.stringify(m_to_t(deletedClubMember))}`)
+        }).
+        catch((error: any) => {
+            console.log(`error deactivaating club member: ${error}`)
+        })
 }
 
 // TODO re-integrate them into the flow, as close to the flow start as possible
