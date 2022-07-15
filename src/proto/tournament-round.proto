@@ -11,6 +11,18 @@ message MTournamentRound {
     string status = 3;
 }
 
+message MTournamentRoundId {
+    string id = 1;
+}
+
 message MTournamentRounds {
     repeated MTournamentRound data = 1;
+}
+
+message MTournamentRoundEmpty {}
+
+message MTournamentRoundUpdate {
+    string id = 1;
+    optional tournamentGame.MTournamentGames tournament_games= 2;
+    optional string status = 3;
 }
