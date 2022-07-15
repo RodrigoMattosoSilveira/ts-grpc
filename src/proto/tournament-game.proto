@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "tournament-player.proto";
+
+package tournamentGame;
+
+message MTournamentGame  {
+  string id = 1; // 8 chars, random string
+  tournamentPlayer.MTournamentPlayerId white_pieces_player_id = 2;
+  int32 white_pieces_player_score = 3;
+  tournamentPlayer.MTournamentPlayerId black_pieces_player_id = 4;
+  int32 black_pieces_player_score = 5;
+  string status = 6; // (p)lanned(default), (u)nderway, (c)ompleted
+}
+
+message MTournamentGames  {
+  repeated MTournamentGame data = 1;
+}

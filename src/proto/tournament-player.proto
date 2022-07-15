@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "club-member.proto";
+
+package tournamentPlayer;
+
+message MTournamentPlayer {
+  string id = 1;
+  clubMember.MClubMemberId club_member_id = 2;
+  string name = 3; // Last, First
+  int32 score = 4; // tournament score, updated after each game
+  clubMember.MClubMemberRating club_member_rating = 5; // club rate, set at the start of the tournament
+  MTournamentPlayerOpponents tournament_opponents = 6;;
+  MTournamentGameColors tournament_game_colors = 7; // last two game colors
+  int32 bye_or_forfeit = 8;
+};
+
+message MTournamentPlayerId {
+  string id = 1;
+};
+
+message MTournamentPlayerOpponents {
+  repeated clubMember.MClubMemberId tournament_opponents = 1;
+};
+
+message MTournamentGameColors {
+  repeated string data = 1;
+};
+
+message MTournamentPlayers {
+  repeated MTournamentPlayer data = 1;
+};

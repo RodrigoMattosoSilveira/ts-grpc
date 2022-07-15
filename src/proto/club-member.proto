@@ -10,7 +10,7 @@ message MClubMember {
   string email = 4;
   string password = 5;
   string cell = 6;
-  int32 rating = 7;
+  MClubMemberRating rating = 7;
   bool status = 8;
 }
 
@@ -22,7 +22,7 @@ message MClubMemberUpdate {
   optional string email = 4;
   optional string password = 5;
   optional string cell = 6;
-  optional int32 rating = 7;
+  optional MClubMemberRating rating = 7;
   optional bool status = 8;
 }
 
@@ -34,6 +34,10 @@ message MClubMembers {
 
 message MClubMemberId {
   string id = 1;
+}
+
+message MClubMemberRating {
+  int32 id = 1;
 }
 
 // The greeting service definition

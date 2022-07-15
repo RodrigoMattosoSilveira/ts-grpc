@@ -107,3 +107,15 @@ dist
 /src/proto/club-member_grpc_pb.js
 /src/proto/club-member_pb.d.ts
 /src/proto/club-member_pb.js
+/src/proto/tournament-player_grpc_pb.js
+/src/proto/tournament-player_pb.d.ts
+/src/proto/tournament-player_pb.js
+/src/proto/tournament-game_grpc_pb.js
+/src/proto/tournament-game_pb.d.ts
+/src/proto/tournament-game_pb.js
+/src/proto/tournament-round_grpc_pb.js
+/src/proto/tournament-round_pb.d.ts
+/src/proto/tournament-round_pb.js
+/src/proto/tournament_grpc_pb.js
+/src/proto/tournament_pb.d.ts
+/src/proto/tournament_pb.js

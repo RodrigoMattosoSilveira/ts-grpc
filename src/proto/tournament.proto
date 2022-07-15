@@ -1,0 +1,29 @@
+syntax = "proto3";
+import "club-member.proto";
+import "tournament-player.proto";
+import "tournament-round.proto";
+
+/** ********************************************************************************************************************
+ * The Tournament PROTO Definition
+ * ********************************************************************************************************************/
+message MTournament {
+  string id = 1; // 8 chars, random string
+  clubMember.MClubMemberId director = 2; // Club Member ID
+  string name = 3;
+  int32 start = 4;
+  int32 end = 5;
+  int32 max_players = 6;
+  int32 type = 7;
+  int32 number_of_rounds = 8;
+  int32 win_points = 9;
+  int32 draw_points = 10;
+  int32 loss_points = 11;
+  tournamentPlayer.MTournamentPlayers players = 12;
+  .tournamentRound.MTournamentRounds rounds = 13;
+  string status = 14;
+}
+
+message MTournamentId {
+  string tournament_id = 1;
+}
+
