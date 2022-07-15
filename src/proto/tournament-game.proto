@@ -13,6 +13,24 @@ message MTournamentGame  {
   string status = 6; // (p)lanned(default), (u)nderway, (c)ompleted
 }
 
-message MTournamentGames  {
-  repeated MTournamentGame data = 1;
+message MTournamentGameId  {
+  string id = 1;
+}
+
+message MTournamentGameEmpty  {
+  string id = 1;
+}
+
+message MTournamentGames  {}
+
+message MTournamentGameScoreUpdate  {
+  string id = 1; // 8 chars, random string
+  int32 white_pieces_player_score = 3;
+  int32 black_pieces_player_score = 5;
+  string status = 6; // (p)lanned(default), (u)nderway, (c)ompleted
+}
+
+message MTournamentGameStusUpdate  {
+  string id = 1; // 8 chars, random string
+  string status = 6; // (p)lanned(default), (u)nderway, (c)ompleted
 }

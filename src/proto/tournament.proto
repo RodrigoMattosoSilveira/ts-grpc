@@ -2,6 +2,7 @@ syntax = "proto3";
 import "club-member.proto";
 import "tournament-player.proto";
 import "tournament-round.proto";
+import "tournament-game.proto";
 
 /** ********************************************************************************************************************
  * The Tournament PROTO Definition
@@ -19,7 +20,7 @@ message MTournament {
   int32 draw_points = 10;
   int32 loss_points = 11;
   tournamentPlayer.MTournamentPlayers players = 12;
-  .tournamentRound.MTournamentRounds rounds = 13;
+  tournamentRound.MTournamentRounds rounds = 13;
   string status = 14;
 }
 
@@ -27,3 +28,92 @@ message MTournamentId {
   string tournament_id = 1;
 }
 
+message MTournamentEmpty {}
+
+message MTournamentUpdate {
+  string id = 1; // 8 chars, random string
+  optional clubMember.MClubMemberId director = 2; // Club Member ID
+  optional string name = 3;
+  optional int32 start = 4;
+  optional int32 end = 5;
+  optional int32 max_players = 6;
+  optional int32 type = 7;
+  optional int32 number_of_rounds = 8;
+  optional int32 win_points = 9;
+  optional int32 draw_points = 10;
+  optional int32 loss_points = 11;
+  optional tournamentPlayer.MTournamentPlayers players = 12;
+  optional tournamentRound.MTournamentRounds rounds = 13;
+  optional string status = 14;
+}
+
+/**
+ * Given the document-centric architecture, the tournament, players, round, and games operations are all consolidated
+ * into one single service
+ */
+// The tournament service definition
+service STournament {
+  /**
+   * Tournament operations
+   */
+  // creates a tournament
+  rpc CreateTournament (MTournament) returns (MTournament);
+  // reads a tournament
+  rpc ReadTournament (MTournamentId) returns (MTournament);
+  // reads all tournaments
+  rpc ReadTournaments (MTournamentEmpty) returns (stream MTournament);
+  // Update a tournament
+  rpc UpdateTournament (MTournamentUpdate) returns (MTournament);
+  // Delete a tournament
+  rpc DeleteTournament (MTournamentId) returns (MTournament);
+  // Start tournament
+  rpc StartTournament (MTournamentId) returns (MTournament);
+  // Complete tournament
+  rpc CompleteTournament (MTournamentId) returns (MTournament);
+  /**
+  * Tournament Player operations
+  */
+  rpc CreateTournamentPlayer (tournamentPlayer.MTournamentPlayer) returns (tournamentPlayer.MTournamentPlayer);
+  // reads a tournament round
+  rpc ReadTournamentPlayer (tournamentPlayer.MTournamentPlayerId) returns (tournamentPlayer.MTournamentPlayer);
+  // reads all tournament rounds
+  rpc ReadTournamentPlayers (tournamentPlayer.MTournamentPlayerEmpty) returns (stream tournamentPlayer.MTournamentPlayer);
+  // Update a tournament round
+  rpc UpdateTournamentPlayer (tournamentPlayer.MTournamentPlayerUpdate) returns (tournamentPlayer.MTournamentPlayer);
+  // Delete a tournament round
+  rpc DeleteTournamentPlayer (tournamentPlayer.MTournamentPlayerId) returns (tournamentPlayer.MTournamentPlayer);
+  /**
+  * Tournament Round operations
+  */
+  // creates a tournament round
+  rpc CreateTournamentRound (tournamentRound.MTournamentRound) returns (tournamentRound.MTournamentRound);
+  // reads a tournament round
+  rpc ReadTournamentRound (tournamentRound.MTournamentRoundId) returns (tournamentRound.MTournamentRound);
+  // reads all tournament rounds
+  rpc ReadTournamentRounds (tournamentRound.MTournamentRoundEmpty) returns (stream tournamentRound.MTournamentRound);
+  // Update a tournament round
+  rpc UpdateTournamentRound (tournamentRound.MTournamentRoundUpdate) returns (tournamentRound.MTournamentRound);
+  // Delete a tournament round
+  rpc DeleteTournamentRound (tournamentRound.MTournamentRoundId) returns (tournamentRound.MTournamentRound);
+  // Plan the next round
+  rpc PlanNextTournamentRound (MTournamentId) returns (tournamentRound.MTournamentRound);
+  // Start the next round
+  rpc StartNextTournamentRound (MTournamentId) returns (tournamentRound.MTournamentRound);
+  // Complete the next round
+  rpc CompleteNextTournamentRound (MTournamentId) returns (tournamentRound.MTournamentRound);
+  /**
+  * Tournament Game operations
+  */
+  // creates a tournament game
+  rpc CreateTournamentGame (tournamentGame.MTournamentGame) returns (tournamentGame.MTournamentGame);
+  // reads a tournament game
+  rpc ReadTournamentGame (tournamentGame.MTournamentGameId) returns (tournamentGame.MTournamentGame);
+  // reads all tournament game
+  rpc ReadTournamentGames (tournamentGame.MTournamentGameEmpty) returns (stream tournamentGame.MTournamentGame);
+  // Update a tournament game score
+  rpc UpdateTournamentScoreGame (tournamentGame.MTournamentGameScoreUpdate) returns (tournamentGame.MTournamentGame);
+  // Update a tournament status
+  rpc UpdateTournamentStatusGame (tournamentGame.MTournamentGameStusUpdate) returns (tournamentGame.MTournamentGame);
+  // Delete a tournament game
+  rpc DeleteTournamentGame (tournamentGame.MTournamentGameId) returns (tournamentGame.MTournamentGame);
+}
