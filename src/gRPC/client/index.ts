@@ -3,9 +3,9 @@ import readClubMember from "./read-club-member";
 import readClubMembers from "./read-club-members";
 import updateClubMember from "./update-club-member";
 import deleteClubMember from "./delete-club-member";
-import {TClubMember, TClubMemberUpdate} from "../types/club-member-type";
+import {TClubMember, TClubMemberUpdate} from "../../types/club-member-type";
 import {MClubMember, MClubMemberEmpty} from "../proto/club-member_pb";
-import {m_to_t, tUpdate_to_mUpdate} from "../utils/utils";
+import {m_to_t, tUpdate_to_mUpdate} from "../../utils/utils";
 import shortid from "shortid";
 
 function runCreateClubMember(tClubMember: TClubMember) {

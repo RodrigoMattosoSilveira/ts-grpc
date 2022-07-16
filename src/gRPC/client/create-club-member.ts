@@ -1,7 +1,7 @@
 import { MClubMember } from "../proto/club-member_pb";
-import { TClubMember } from "../types/club-member-type"
+import { TClubMember } from "../../types/club-member-type"
 import { client } from "./utils";
-import { t_to_m } from "../utils/utils"
+import { t_to_m } from "../../utils/utils"
 
 // GRPC Client handler to create a Club Member
 const createClubMember = (tClubMember: TClubMember): any => {

@@ -1,4 +1,4 @@
-import {MClubMember, MClubMemberRating, MClubMemberUpdate} from "../proto/club-member_pb";
+import {MClubMember, MClubMemberRating, MClubMemberUpdate} from "../gRPC/proto/club-member_pb";
 import {TClubMember, TClubMemberUpdate} from "../types/club-member-type";
 
 /**
