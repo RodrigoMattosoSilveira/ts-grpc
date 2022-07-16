@@ -61,7 +61,7 @@ export class ClubMemberServices implements ISClubMemberServer {
         const clubMembers = this.getClubMembers(CLUB_MEMBER_RAW_FN);
 
         const targetClubMemberId: string = call.request.getId();
-        const targetClubMember = clubMembers.find((clubMember: TClubMember) => {
+        const targetClubMember: TClubMember = clubMembers.find((clubMember: TClubMember) => {
             return clubMember.id === targetClubMemberId;
         })
         if (!targetClubMember) {
@@ -76,33 +76,33 @@ export class ClubMemberServices implements ISClubMemberServer {
         else {
             // Update the target club member
             if (call.request.hasFirst()) {
-                targetClubMember['first'] = call.request.getFirst();
+                targetClubMember['first'] = <string>call.request.getFirst();
             }
             if (call.request.hasLast()) {
-                targetClubMember['last'] = call.request.getLast();
+                targetClubMember['last'] = <string>call.request.getLast();
             }
             if (call.request.hasEmail()) {
-                targetClubMember['email'] = call.request.getEmail();
+                targetClubMember['email'] = <string>call.request.getEmail();
             }
             if (call.request.hasPassword()) {
-                targetClubMember['password'] = call.request.getPassword();
+                targetClubMember['password'] = <string>call.request.getPassword();
             }
             if (call.request.hasCell()) {
-                targetClubMember['cell'] = call.request.getCell();
+                targetClubMember['cell'] = <string>call.request.getCell();
             }
             if (call.request.hasRating()) {
-                targetClubMember['rating'] = call.request.getRating();
+                targetClubMember['rating'] = <number>call.request.getRating()?.getRating();
             }
             if (call.request.hasStatus()) {
-                targetClubMember['status'] = call.request.getStatus();
+                targetClubMember['status'] = <boolean>call.request.getStatus();
             }
             // Save the updated club members
             this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
 
             // send reply with updated club member
-            const clubMemberGrpcObject = t_to_m(targetClubMember);
+            const mClubMember: MClubMember = t_to_m(targetClubMember);
             console.log(`updateClubMember: returning ${targetClubMember.first} (id: ${targetClubMember.id}).`);
-            callback(null, clubMemberGrpcObject);
+            callback(null, mClubMember);
         }
     }
     deleteClubMember(call: ServerUnaryCall<MClubMemberId, any>, callback: sendUnaryData<MClubMember>) {

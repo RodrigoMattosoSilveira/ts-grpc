@@ -37,7 +37,7 @@ message MClubMemberId {
 }
 
 message MClubMemberRating {
-  int32 id = 1;
+  int32 rating = 1;
 }
 
 // The greeting service definition
