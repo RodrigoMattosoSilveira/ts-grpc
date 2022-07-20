@@ -1,0 +1,32 @@
+{
+  "id":"tDjNG03bw",
+  "director":"4czmbUtPMw",
+  "name":"Priest River-2022",
+  "start":"2022-12-01T07:00:00.000Z",
+  "end":"2022-12-04T07:00:00.000Z",
+  "maxPlayers":15,
+  "type":"swiss",
+  "numberOfRounds":4,
+  "winPoints":3,
+  "drawPoints":1,
+  "lossPoints":0,
+  "players":[
+    {"id":"qKv8bJIlp0", "name":"Maddox, Sophia", "score":0,"clubRating":1685, "opponents":[],"lastTwoGamesColors":[], "byeOrForfeit":0},
+    {"id":"GA4MJdeV7C", "name":"Delacruz, Ivy", "score":0,"clubRating":1698,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"1jfo-9qB-n","name":"Snow, Saniya","score":0,"clubRating":1705,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"uMTxooReGK","name":"Kerr, Aaron","score":0,"clubRating":1740,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"wmX9MurBs8A","name":"Hobbs, Jarrett","score":0,"clubRating":1788,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"szMvnGbpBo","name":"Harrell, Demarion","score":0,"clubRating":1859,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"4HzSfjPAphO","name":"Schmitt, Amani","score":0,"clubRating":1884,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"rE7ShQlkoa","name":"Valdez, Joslyn","score":0,"clubRating":1909,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"CnZ-e18YL9","name":"Stuart, Reuben","score":0,"clubRating":1945,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"4czmbUtPMw","name":"Dorsey, Brett","score":0,"clubRating":1957,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"zcN7Gchlmm","name":"Osborn, Norah","score":0,"clubRating":2039,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"T7Pxzd25_M1","name":"Woodward, Emilie","score":0,"clubRating":1669,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"1bXwSR8QIW","name":"Todd, Makai","score":0,"clubRating":1608,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"XDlYeGfJXI","name":"Mcguire, Tristan","score":0,"clubRating":1584,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0},
+    {"id":"YeJ9YSTwWH","name":"Lowe, Maryjane","score":0,"clubRating":1544,"opponents":[],"lastTwoGamesColors":[],"byeOrForfeit":0}
+    ],
+  "rounds": [],
+  "status": "p"
+}

@@ -9,7 +9,7 @@ import {MClubMember, MClubMemberId, MClubMemberUpdate} from "../proto/club-membe
 import { TClubMember } from "../../types/club-member-type";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import * as fs from "fs";
-import {m_to_t, t_to_m} from "../../utils/utils";
+import {m_to_t, t_to_m} from "../../utils/club-member-utils";
 
 const CLUB_MEMBER_RAW_FN    = __dirname + '/../../../data/club-members-raw.json';
 const CLUB_MEMBER_EDITED_FN = __dirname + '/../../../data/club-members-edited.json';
@@ -91,7 +91,7 @@ export class ClubMemberServices implements ISClubMemberServer {
                 targetClubMember['cell'] = <string>call.request.getCell();
             }
             if (call.request.hasRating()) {
-                targetClubMember['rating'] = <number>call.request.getRating()?.getRating();
+                targetClubMember['rating'] = <number>call.request.getRating();
             }
             if (call.request.hasStatus()) {
                 targetClubMember['status'] = <boolean>call.request.getStatus();

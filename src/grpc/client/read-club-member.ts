@@ -1,5 +1,5 @@
 import { MClubMember, MClubMemberId } from "../proto/club-member_pb";
-import { client } from "./utils";
+import { clubMemberClient } from "./client";
 
 // export const runCreateClubMember = (): void => {
 const readClubMember = (id: string): any => {
@@ -7,7 +7,7 @@ const readClubMember = (id: string): any => {
         const request = new MClubMemberId();
         request.setId(id);
 
-        client.readClubMember(request, (err: any, clubMember: any) => {
+        clubMemberClient.readClubMember(request, (err: any, clubMember: any) => {
             if (err) {
                 reject(err);
             }

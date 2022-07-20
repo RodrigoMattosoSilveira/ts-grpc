@@ -1,5 +1,5 @@
 import { MClubMember, MClubMemberId } from "../proto/club-member_pb";
-import { client } from "./utils";
+import { clubMemberClient } from "./client";
 
 // export const runCreateClubMember = (): void => {
 const deleteClubMember = (id: string): any => {
@@ -7,7 +7,7 @@ const deleteClubMember = (id: string): any => {
         const deleteClubMember = new MClubMemberId();
         deleteClubMember.setId(id);
 
-        client.deleteClubMember(deleteClubMember, (err: any, deletedClubMember: any) => {
+        clubMemberClient.deleteClubMember(deleteClubMember, (err: any, deletedClubMember: any) => {
             if (err) reject(err);
             else resolve(deletedClubMember);
         });

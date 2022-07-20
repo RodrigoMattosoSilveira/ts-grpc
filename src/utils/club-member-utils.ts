@@ -1,4 +1,4 @@
-import {MClubMember, MClubMemberRating, MClubMemberUpdate} from "../gRPC/proto/club-member_pb";
+import {MClubMember, MClubMemberUpdate} from "../grpc/proto/club-member_pb"
 import {TClubMember, TClubMemberUpdate} from "../types/club-member-type";
 
 /**
@@ -7,14 +7,14 @@ import {TClubMember, TClubMemberUpdate} from "../types/club-member-type";
  */
 export const m_to_t = (m: MClubMember): TClubMember => {
     return <TClubMember>{
-        id: m.getId(),
-        first: m.getFirst(),
-        last: m.getLast(),
-        password: m.getPassword(),
-        cell: m.getCell(),
-        email: m.getEmail(),
-        rating: m.getRating()?.getRating(),
-        status: m.getStatus(),
+        id: <string>m.getId(),
+        first: <string>m.getFirst(),
+        last: <string>m.getLast(),
+        password: <string>m.getPassword(),
+        cell: <string>m.getCell(),
+        email: <string>m.getEmail(),
+        rating: <number>m.getRating(),
+        status: <boolean>m.getStatus(),
     }
 }
 
@@ -30,7 +30,7 @@ export const t_to_m = (t: TClubMember): MClubMember => {
     m.setPassword(t.password);
     m.setEmail(t.email);
     m.setCell(t.cell);
-    m.setRating(new MClubMemberRating().setRating(t.rating));
+    m.setRating(t.rating);
     m.setStatus(t.status);
     return m;
 }
@@ -59,7 +59,7 @@ export const tUpdate_to_mUpdate = (t: TClubMemberUpdate): MClubMemberUpdate => {
         m.setCell(t.cell);
     }
     if (t['rating']) {
-        m.setRating(new MClubMemberRating().setRating(t.rating));
+        m.setRating(t.rating);
     }
     if (t['status']) {
         m.setStatus(t.status);

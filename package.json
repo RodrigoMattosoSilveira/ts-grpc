@@ -8,15 +8,16 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "run-s": "ts-node src/gRPC/server/index.ts",
-    "run-c-readOne": "ts-node src/gRPC/client/index readOne",
-    "run-c-readAll": "ts-node src/gRPC/client/index  readAll",
-    "run-c-create": "ts-node src/gRPC/client/index  create",
-    "run-c-update": "ts-node src/gRPC/client/index  update",
-    "run-c-delete": "ts-node src/gRPC/client/index  delete",
-    "proto": "sh src/gRPC/proto/build.sh",
-    "server": "ts-node src/gRPC/server/index.ts",
-    "client": "ts-node src/gRPC/client/index.ts"
+    "run-s": "ts-node src/grpc/server/index.ts",
+    "run-c-readOneCM": "ts-node src/grpc/client/index readOneCM",
+    "run-c-readAllCM": "ts-node src/grpc/client/index  readAllCM",
+    "run-c-createCM": "ts-node src/grpc/client/index  createCM",
+    "run-c-updateCM": "ts-node src/grpc/client/index  updateCM",
+    "run-c-deleteCM": "ts-node src/grpc/client/index  deleteCM",
+    "run-c-createT": "ts-node src/grpc/client/index  createT",
+    "proto": "sh src/grpc/proto/build.sh",
+    "server": "ts-node src/grpc/server/index.ts",
+    "client": "ts-node src/grpc/client/index.ts"
   },
   "dependencies": {
     "dotenv": "^16.0.1",

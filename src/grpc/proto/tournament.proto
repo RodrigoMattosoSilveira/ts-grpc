@@ -1,0 +1,225 @@
+syntax = "proto3";
+
+import "club-member.proto";
+
+/** ********************************************************************************************************************
+ * The Tournament PROTO Definition
+ * ********************************************************************************************************************/
+message MTournament {
+  string id = 1;
+  string director = 2;
+  string name = 3;
+  int64 start = 4;
+  int64 end = 5;
+  int32 max_players = 6;
+  string type = 7;
+  int32 number_of_rounds = 8;
+  int32 win_points = 9;
+  int32 draw_points = 10;
+  int32 loss_points = 11;
+  MTournamentPlayers players = 12;
+  MTournamentRounds rounds = 13;
+  string status = 14;
+}
+
+/**
+ * Tournament messages
+ */
+message MTournamentId {
+  string tournament_id = 1;
+}
+
+message MTournamentEmpty {}
+
+message MTournamentUpdate {
+  string id = 1;
+  optional MClubMemberId director = 2;
+  optional string name = 3;
+  optional int32 start = 4;
+  optional int32 end = 5;
+  optional int32 max_players = 6;
+  optional int32 type = 7;
+  optional int32 number_of_rounds = 8;
+  optional int32 win_points = 9;
+  optional int32 draw_points = 10;
+  optional int32 loss_points = 11;
+  optional MTournamentPlayers players = 12;
+  optional MTournamentRounds rounds = 13;
+  optional string status = 14;
+}
+
+/**
+ * Tournament Player messages
+ */
+message MTournamentPlayer {
+  string id = 1;
+  MClubMemberId club_member_id = 2;
+  MTournamentId tournament_id = 3;
+  string name = 4; // Last, First
+  int32 score = 5; // tournament score, updated after each game
+  int32 club_member_rating = 6; // club rate, set at the start of the tournament
+  MTournamentPlayerOpponents tournament_opponents = 7;;
+  MTournamentGameColors tournament_game_colors = 8; // last two game colors
+  int32 bye_or_forfeit = 9;
+  string status = 10;
+};
+
+message MTournamentPlayerId {
+  string id = 1;
+};
+
+message MTournamentPlayerEmpty {};
+
+message MTournamentPlayerOpponents {
+  repeated MClubMemberId data = 1;
+};
+
+message MTournamentGameColors {
+  repeated string tournament_player_opponents = 1;
+};
+
+message MTournamentPlayers {
+  repeated MTournamentPlayer tournament_players = 1;
+};
+
+message MTournamentPlayerUpdate {
+  string id = 1;
+  optional int32 score = 4; // tournament score, updated after each game
+  optional MTournamentPlayerOpponents tournament_opponents = 6;;
+  optional MTournamentGameColors tournament_game_colors = 7; // last two game colors
+  optional int32 bye_or_forfeit = 8;
+};
+
+/**
+ * Tournament Round messages
+ */
+message MTournamentRound {
+  string id = 1;
+  MTournamentId tournament_id = 2;
+  MTournamentGames tournament_games = 3;
+  string status = 4;
+}
+
+message MTournamentRoundId {
+  string id = 1;
+}
+
+message MTournamentRounds {
+  repeated MTournamentRound tournament_round = 1;
+}
+
+message MTournamentRoundEmpty {}
+
+message MTournamentRoundUpdate {
+  string id = 1;
+  optional MTournamentGames tournament_games= 2;
+  optional string status = 3;
+}
+
+/**
+ * Tournament Game messages
+ */
+message MTournamentGame  {
+  string id = 1; // 8 chars, random string
+  MTournamentId tournament_id = 2;
+  MTournamentRoundId tournament_round_id = 3;
+  MTournamentPlayerId white_pieces_player_id = 4;
+  int32 white_pieces_player_score = 5;
+  MTournamentPlayerId black_pieces_player_id = 6;
+  int32 black_pieces_player_score = 7;
+  string status = 8;
+}
+
+message MTournamentGameId  {
+  string id = 1;
+}
+
+message MTournamentGameEmpty  {
+  string id = 1;
+}
+
+message MTournamentGames  {
+  repeated MTournamentGame tournament_games = 1;
+}
+
+message MTournamentGameScoreUpdate  {
+  string id = 1; // 8 chars, random string
+  int32 white_pieces_player_score = 2;
+  int32 black_pieces_player_score = 3;
+  string status = 4;
+}
+
+message MTournamentGameStatusUpdate  {
+  string id = 1; // 8 chars, random string
+  string status = 2;
+}
+/**
+ * Given the document-centric architecture, the tournament, players, round, and games operations are all consolidated
+ * into one single service
+ */
+// The tournament service definition
+service STournament {
+  /**
+   * Tournament operations
+   */
+  // creates a tournament
+  rpc CreateTournament (MTournament) returns (MTournament);
+  // reads a tournament
+//  rpc ReadTournament (MTournamentId) returns (MTournament);
+//  // reads all tournaments
+//  rpc ReadTournaments (MTournamentEmpty) returns (stream MTournament);
+//  // Update a tournament
+//  rpc UpdateTournament (MTournamentUpdate) returns (MTournament);
+//  // Delete a tournament
+//  rpc DeleteTournament (MTournamentId) returns (MTournament);
+//  // Start tournament
+//  rpc StartTournament (MTournamentId) returns (MTournament);
+//  // Complete tournament
+//  rpc CompleteTournament (MTournamentId) returns (MTournament);
+//  /**
+//  * Tournament Player operations
+//  */
+//  rpc CreateTournamentPlayer (MTournamentPlayer) returns (MTournamentPlayer);
+//  // reads a tournament round
+//  rpc ReadTournamentPlayer (MTournamentPlayerId) returns (MTournamentPlayer);
+//  // reads all tournament rounds
+//  rpc ReadTournamentPlayers (MTournamentPlayerEmpty) returns (stream MTournamentPlayer);
+//  // Update a tournament round
+//  rpc UpdateTournamentPlayer (MTournamentPlayerUpdate) returns (MTournamentPlayer);
+//  // Delete a tournament round
+//  rpc DeleteTournamentPlayer (MTournamentPlayerId) returns (MTournamentPlayer);
+//  /**
+//  * Tournament Round operations
+//  */
+//  // creates a tournament round
+//  rpc CreateTournamentRound (MTournamentRound) returns (MTournamentRound);
+//  // reads a tournament round
+//  rpc ReadTournamentRound (MTournamentRoundId) returns (MTournamentRound);
+//  // reads all tournament rounds
+//  rpc ReadTournamentRounds (MTournamentRoundEmpty) returns (stream MTournamentRound);
+//  // Update a tournament round
+//  rpc UpdateTournamentRound (MTournamentRoundUpdate) returns (MTournamentRound);
+//  // Delete a tournament round
+//  rpc DeleteTournamentRound (MTournamentRoundId) returns (MTournamentRound);
+//  // Plan the next round
+//  rpc PlanNextTournamentRound (MTournamentId) returns (MTournamentRound);
+//  // Start the next round
+//  rpc StartNextTournamentRound (MTournamentId) returns (MTournamentRound);
+//  // Complete the next round
+//  rpc CompleteNextTournamentRound (MTournamentId) returns (MTournamentRound);
+//  /**
+//  * Tournament Game operations
+//  */
+//  // creates a tournament game
+//  rpc CreateTournamentGame (MTournamentGame) returns (MTournamentGame);
+//  // reads a tournament game
+//  rpc ReadTournamentGame (MTournamentGameId) returns (MTournamentGame);
+//  // reads all tournament game
+//  rpc ReadTournamentGames (MTournamentGameEmpty) returns (stream MTournamentGame);
+//  // Update a tournament game score
+//  rpc UpdateTournamentScoreGame (MTournamentGameScoreUpdate) returns (MTournamentGame);
+//  // Update a tournament status
+//  rpc UpdateTournamentStatusGame (MTournamentGameStatusUpdate) returns (MTournamentGame);
+//  // Delete a tournament game
+//  rpc DeleteTournamentGame (MTournamentGameId) returns (MTournamentGame);
+}

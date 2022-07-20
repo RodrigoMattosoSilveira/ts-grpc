@@ -1,10 +1,10 @@
 import {MClubMember, MClubMemberUpdate} from "../proto/club-member_pb";
-import { client } from "./utils";
+import { clubMemberClient } from "./client";
 
 const updateClubMember = (clubMemberU: MClubMemberUpdate): any => {
     return new Promise<MClubMember>((resolve, reject) => {
         console.log(`client - Calling updateClubMember - ${clubMemberU.toString()}`)
-        client.updateClubMember(clubMemberU, (err: any, updatedClubMember: MClubMember) => {
+        clubMemberClient.updateClubMember(clubMemberU, (err: any, updatedClubMember: MClubMember) => {
             if (err) reject(err);
             else resolve(updatedClubMember);
         });
