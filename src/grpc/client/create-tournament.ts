@@ -1,14 +1,15 @@
 import { tournamentClient } from "./client";
 import {TTournament} from "../../types/tournament-types";
 import {MTournament, MTournamentPlayers, MTournamentRounds} from "../proto/tournament_pb";
+import {MClubMemberId} from "../proto/club-member_pb";
 
 // GRPC Client handler to create a Club Member
 const createTournament = (tTournament: TTournament): any => {
     console.log(`client/createTournament - Creating a record: ${JSON.stringify(tTournament)}`);
     return new Promise<MTournament>((resolve, reject) => {
         const mTournament: MTournament = new MTournament();
-        mTournament.setId(tTournament.id);                          // 1
-        mTournament.setDirector(tTournament.director);              // 2
+        mTournament.setId(tTournament.id);                                          // 1
+        mTournament.setDirector(new MClubMemberId().setId(tTournament.director));   // 2
         mTournament.setName(tTournament.name);                      // 3
         mTournament.setStart(tTournament.start);                    // 4
         mTournament.setEnd(tTournament.end);                        // 5

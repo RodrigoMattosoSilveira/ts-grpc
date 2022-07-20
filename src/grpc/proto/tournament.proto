@@ -7,7 +7,7 @@ import "club-member.proto";
  * ********************************************************************************************************************/
 message MTournament {
   string id = 1;
-  string director = 2;
+  MClubMemberId  director = 2;
   string name = 3;
   int64 start = 4;
   int64 end = 5;

@@ -8,7 +8,7 @@ import {TTournament} from "../types/tournament-types";
 export const tournament_m_to_t = (m: MTournament): TTournament => {
     return <TTournament>{
         id: m.getId(),
-        director: m.getDirector(),
+        director: m.getDirector()?.getId(),
         name: m.getName(),
         start: m.getStart(),
         end: m.getEnd(),
