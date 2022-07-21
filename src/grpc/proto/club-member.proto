@@ -24,13 +24,16 @@ message MClubMemberUpdate {
   optional bool status = 8;
 }
 
+message MClubMemberId {
+  string id = 1;
+}
 message MClubMemberEmpty {}
 
 message MClubMembers {
   repeated MClubMember data = 1;
 }
 
-message MClubMemberId {
+message string {
   string id = 1;
 }
 

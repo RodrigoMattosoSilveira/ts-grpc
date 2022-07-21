@@ -21,6 +21,7 @@ import {
 } from "../../types/tournament-types";
 import {MTournament} from "../proto/tournament_pb";
 import {m_to_t, tUpdate_to_mUpdate} from "../../utils/club-member-utils";
+import {tournamentRead} from "./tournament-read";
 
 
 // Club Member Operations
@@ -85,12 +86,22 @@ function runDeleteClubMember(clubMemberId: string) {
 function runCreateTournament(tTournament: TTournament) {
     console.log(`client/runCreateTournament - Creating a record: ${JSON.stringify(tTournament)}`);
     createTournament(tTournament).
-    then((newTournament: MTournament) => {
-        console.log(`created tournament: ${JSON.stringify(tournament_m_to_t(newTournament))}`)
-    }).
-    catch((error: any) => {
-        console.log(`error creating tournament: ${error}`)
-    })
+        then((newTournament: MTournament) => {
+            console.log(`created tournament: ${JSON.stringify(tournament_m_to_t(newTournament))}`)
+        }).
+        catch((error: any) => {
+            console.log(`error creating tournament: ${error}`)
+        })
+}
+
+function runReadTournament(tournamentId: string) {
+    tournamentRead(tournamentId).
+        then((tournament: any) => {
+            console.log(`read tournament: ${JSON.stringify(tournament_m_to_t(tournament))}`)
+        }).
+        catch((error: any) => {
+            console.log(`error reading tournament: ${error}`)
+        })
 }
 
 // TODO re-integrate them into the flow, as close to the flow start as possible
@@ -195,8 +206,8 @@ function main() {
                 id: shortid.generate(),                 // 1
                 director: "gP1cgfAhA8",                 // 2
                 name: "Laclede Rounds",                 // 3
-                start: 1667610000000,                   // 4
-                end: 1667786400,                        // 5
+                start: "1667610000000",                   // 4
+                end: "1667786400",                        // 5
                 maxPlayers: 36,                         // 6
                 type: TOURNAMENT_TYPE_SWISS,            // 7
                 numberOfRounds: 6,                      // 8
@@ -209,6 +220,12 @@ function main() {
             }
             // TODO find the best place to validate the input
             runCreateTournament(tTournament);
+            break;
+        case 'readOneT':
+            const tournamentId = "Fmrg6J81A";
+            console.log(`Reading one tournament record ${tournamentId}`);
+            // TODO find the best place to validate the input
+            runReadTournament(tournamentId);
             break;
         default:
             console.log('Sorry, that is not something I know how to do.');

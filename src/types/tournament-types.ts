@@ -8,6 +8,7 @@ export type TTournamentPlayer = {
     opponents: string[];
     lastTwoGamesColors: COLOR[] // last two game colors
     byeOrForfeit: number;
+    status: boolean;
 }
 export const BYE_PLAYER: string = `BYE PLAYER`
 export const ROUND_BYE_PLAYER: TTournamentPlayer = {
@@ -17,15 +18,17 @@ export const ROUND_BYE_PLAYER: TTournamentPlayer = {
     clubRating: 0,
     opponents: [],
     lastTwoGamesColors: [],
-    byeOrForfeit: 0
-
+    byeOrForfeit: 0,
+    status: true
 }
 
 export type TTournamentGame = {
     id: string; // 8 chars, random string
-    whitePiecesPlayer: TTournamentPlayer;
+    tournamentId: string;
+    roundId: string;
+    whitePiecesPlayerId: string;
     whitePiecesPlayerScore: TOURNAMENT_SCORE;
-    blackPiecesPlayer: TTournamentPlayer;
+    blackPiecesPlayerId: string;
     blackPiecesPlayerScore: TOURNAMENT_SCORE;
     status: STATUS; // (p)lanned(default), (u)nderway, (c)ompleted
 }
@@ -40,8 +43,8 @@ export type TTournament = {
     id: string; // 8 chars, random string
     director: string; // Club Member ID
     name: string;
-    start: number;
-    end: number;
+    start: string; // required since gRPC int64 are strings
+    end: string; // required since gRPC int64 are strings
     maxPlayers: number;
     type: string;
     numberOfRounds: number;

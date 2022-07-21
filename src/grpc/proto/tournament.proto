@@ -1,16 +1,14 @@
 syntax = "proto3";
 
-import "club-member.proto";
-
 /** ********************************************************************************************************************
  * The Tournament PROTO Definition
  * ********************************************************************************************************************/
 message MTournament {
   string id = 1;
-  MClubMemberId  director = 2;
+  string  director = 2;
   string name = 3;
-  int64 start = 4;
-  int64 end = 5;
+  string start = 4;
+  string end = 5;
   int32 max_players = 6;
   string type = 7;
   int32 number_of_rounds = 8;
@@ -26,14 +24,14 @@ message MTournament {
  * Tournament messages
  */
 message MTournamentId {
-  string tournament_id = 1;
+  string id = 1;
 }
 
 message MTournamentEmpty {}
 
 message MTournamentUpdate {
   string id = 1;
-  optional MClubMemberId director = 2;
+  optional string director = 2;
   optional string name = 3;
   optional int32 start = 4;
   optional int32 end = 5;
@@ -53,29 +51,23 @@ message MTournamentUpdate {
  */
 message MTournamentPlayer {
   string id = 1;
-  MClubMemberId club_member_id = 2;
-  MTournamentId tournament_id = 3;
-  string name = 4; // Last, First
-  int32 score = 5; // tournament score, updated after each game
-  int32 club_member_rating = 6; // club rate, set at the start of the tournament
-  MTournamentPlayerOpponents tournament_opponents = 7;;
-  MTournamentGameColors tournament_game_colors = 8; // last two game colors
-  int32 bye_or_forfeit = 9;
-  string status = 10;
-};
-
-message MTournamentPlayerId {
-  string id = 1;
+  string name = 2; // Last, First
+  int32 score = 3; // tournament score, updated after each game
+  int32 club_member_rating = 4; // club rate, set at the start of the tournament
+  MTournamentPlayerOpponents opponents = 5;;
+  MTournamentGameColors game_colors = 6; // last two game colors
+  int32 bye_or_forfeit = 7;
+  bool status = 8;
 };
 
 message MTournamentPlayerEmpty {};
 
 message MTournamentPlayerOpponents {
-  repeated MClubMemberId data = 1;
+  repeated string data = 1;
 };
 
 message MTournamentGameColors {
-  repeated string tournament_player_opponents = 1;
+  repeated string colors = 1;
 };
 
 message MTournamentPlayers {
@@ -84,10 +76,12 @@ message MTournamentPlayers {
 
 message MTournamentPlayerUpdate {
   string id = 1;
-  optional int32 score = 4; // tournament score, updated after each game
-  optional MTournamentPlayerOpponents tournament_opponents = 6;;
-  optional MTournamentGameColors tournament_game_colors = 7; // last two game colors
-  optional int32 bye_or_forfeit = 8;
+  optional int32 score = 2; // tournament score, updated after each game
+  optional MTournamentPlayerOpponents opponents = 3;;
+  optional MTournamentGameColors game_colors = 4; // last two game colors
+  optional int32 bye_or_forfeit = 5;
+  bool status = 6;
+
 };
 
 /**
@@ -95,9 +89,8 @@ message MTournamentPlayerUpdate {
  */
 message MTournamentRound {
   string id = 1;
-  MTournamentId tournament_id = 2;
-  MTournamentGames tournament_games = 3;
-  string status = 4;
+  MTournamentGames games = 2;
+  string status = 3;
 }
 
 message MTournamentRoundId {
@@ -105,14 +98,14 @@ message MTournamentRoundId {
 }
 
 message MTournamentRounds {
-  repeated MTournamentRound tournament_round = 1;
+  repeated MTournamentRound round = 1;
 }
 
 message MTournamentRoundEmpty {}
 
 message MTournamentRoundUpdate {
   string id = 1;
-  optional MTournamentGames tournament_games= 2;
+  optional MTournamentGames games = 2;
   optional string status = 3;
 }
 
@@ -121,11 +114,11 @@ message MTournamentRoundUpdate {
  */
 message MTournamentGame  {
   string id = 1; // 8 chars, random string
-  MTournamentId tournament_id = 2;
-  MTournamentRoundId tournament_round_id = 3;
-  MTournamentPlayerId white_pieces_player_id = 4;
+  string tournament_id = 2;
+  string tournament_round_id = 3;
+  string white_pieces_player_id = 4;
   int32 white_pieces_player_score = 5;
-  MTournamentPlayerId black_pieces_player_id = 6;
+  string black_pieces_player_id = 6;
   int32 black_pieces_player_score = 7;
   string status = 8;
 }
@@ -139,7 +132,7 @@ message MTournamentGameEmpty  {
 }
 
 message MTournamentGames  {
-  repeated MTournamentGame tournament_games = 1;
+  repeated MTournamentGame games = 1;
 }
 
 message MTournamentGameScoreUpdate  {
@@ -165,7 +158,7 @@ service STournament {
   // creates a tournament
   rpc CreateTournament (MTournament) returns (MTournament);
   // reads a tournament
-//  rpc ReadTournament (MTournamentId) returns (MTournament);
+  rpc ReadTournament (MTournamentId) returns (MTournament);
 //  // reads all tournaments
 //  rpc ReadTournaments (MTournamentEmpty) returns (stream MTournament);
 //  // Update a tournament
