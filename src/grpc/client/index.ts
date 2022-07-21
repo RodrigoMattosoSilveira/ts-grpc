@@ -19,9 +19,10 @@ import {
     TOURNAMENT_TYPE_SWISS,
     TTournament
 } from "../../types/tournament-types";
-import {MTournament} from "../proto/tournament_pb";
+import {MTournament, MTournamentEmpty} from "../proto/tournament_pb";
 import {m_to_t, tUpdate_to_mUpdate} from "../../utils/club-member-utils";
 import {tournamentRead} from "./tournament-read";
+import {tournamentsRead} from "./tournaments-read";
 
 
 // Club Member Operations
@@ -104,6 +105,18 @@ function runReadTournament(tournamentId: string) {
         })
 }
 
+function runReadTournaments(empty: MTournamentEmpty): any {
+    tournamentsRead(empty).
+        then((tournaments: any) => {
+            tournaments.forEach((tournament: MTournament) => {
+                console.log(`read tournament: ${JSON.stringify(tournament_m_to_t(tournament).id)}\n`)
+            })
+        }).
+        catch((error: any) => {
+            console.log(`error reading tournaments: ${error}`)
+        });
+}
+
 // TODO re-integrate them into the flow, as close to the flow start as possible
 // const clubMemberCreateValidate = (clubMember: TClubMember) => {
 //     let errorMessage = ``;
@@ -177,16 +190,16 @@ function main() {
             runCreateClubMember(tClubMember);
             break;
         case 'readOneCM':
-            console.log(`Reading one record`);
+            console.log(`Reading a club member`);
             // TODO find the best place to validate the input
             runReadClubMember(`ZasAIJcZQLR`);
             break;
         case 'readAllCM':
-            console.log(`Reading all records`);
+            console.log(`Reading all club members`);
             runReadClubMembers(new MClubMemberEmpty());
             break;
         case 'updateCM':
-            console.log(`Updating a record`);
+            console.log(`Updating a club member`);
             // TODO find the best place to validate the input
             const updateClubMemberU: TClubMemberUpdate = {
                 "id": "SCnr4kjwS-7",
@@ -195,7 +208,7 @@ function main() {
             runUpdateClubMember(updateClubMemberU);
             break;
         case 'deleteCM':
-            console.log(`Deleting a record`);
+            console.log(`Deleting a club member`);
             // TODO find the best place to validate the input
             runDeleteClubMember(`ZasAIJcZQLR`);
             break;
@@ -226,6 +239,10 @@ function main() {
             console.log(`Reading one tournament record ${tournamentId}`);
             // TODO find the best place to validate the input
             runReadTournament(tournamentId);
+            break;
+        case 'readAllT':
+            console.log(`Reading all tournaments`);
+            runReadTournaments(new MTournamentEmpty());
             break;
         default:
             console.log('Sorry, that is not something I know how to do.');

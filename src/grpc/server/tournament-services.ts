@@ -1,5 +1,5 @@
 import {ISTournamentServer} from "../proto/tournament_grpc_pb";
-import {sendUnaryData, ServerUnaryCall} from "@grpc/grpc-js";
+import {sendUnaryData, ServerUnaryCall, ServerWritableStream} from "@grpc/grpc-js";
 import {
     MTournament, MTournamentId,
 } from "../proto/tournament_pb";
@@ -7,11 +7,10 @@ import {TTournament} from "../../types/tournament-types";
 import {TClubMember} from "../../types/club-member-type";
 import fs from "fs";
 import {tournament_t_to_m} from "../../utils/tournament-utils";
-
+import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 
 const TOURNAMENT_RAW_FN    = __dirname + '/../../../data/tournaments-raw.json';
 const TOURNAMENT_EDITED_FN = __dirname + '/../../../data/tournaments-edited.json';
-
 
 export class TournamentServices implements ISTournamentServer {
      /**
@@ -45,7 +44,7 @@ export class TournamentServices implements ISTournamentServer {
     };
     // reads a tournament
     readTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>) {
-        console.log(`server/readTournament - reading a record: ${call.request.getId()}/n`);
+        console.log(`server/readTournament - reading a record: ${call.request.getId()}\n`);
         const tournamentId: string = call.request.getId();
         const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN)
         const tournament = tournaments.find((t: TTournament) => t.id === tournamentId);
@@ -59,13 +58,26 @@ export class TournamentServices implements ISTournamentServer {
             return;
         }
         const mTournament = tournament_t_to_m(tournament)
-        console.log(`readTournament: returning ${mTournament.toString()}/n`);
+        console.log(`readTournament: returning ${mTournament.toString()}\n`);
 
         callback(null, mTournament);
         return
-    };
-    // // reads all tournaments
-    // readTournaments (call: ServerWritableStream<Empty, any>) {};
+    }
+    // reads all tournaments
+    readTournaments(call: ServerWritableStream<Empty, any>) {
+        console.log(`server/readTournaments: streaming all tournaments.`);
+
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN)
+        console.log(`readTournaments: returning tournament ${tournaments.length} tournamnets`);
+        tournaments.forEach((tournament: TTournament) => {
+
+            console.log(`readTournaments: returning tournament ${tournament.id}`);
+            const mTournament: MTournament = tournament_t_to_m(tournament)
+            call.write(mTournament)
+        })
+        call.end();
+        return;
+    }
     // // Update a tournament
     // uUpdateTournament (call: ServerUnaryCall<MTournamentUpdate, any>, callback: sendUnaryData<MTournament>) {};
     // // Delete a tournament

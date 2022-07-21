@@ -23,10 +23,51 @@ export const tournament_m_to_t = (m: MTournament): TTournament => {
         winPoints: m.getWinPoints(),
         drawPoints: m.getDrawPoints(),
         lossPoints: m.getLossPoints(),
-        players: [],
+        players: tournamentPlayer_m_to_t(m.getPlayers()),
         rounds: [],
         status: m.getStatus(),
     }
+}
+const tournamentPlayer_m_to_t = (mPlayers: MTournamentPlayers | undefined): TTournamentPlayer[] => {
+    const tPlayers: TTournamentPlayer[] = [];
+    if (mPlayers) {
+        mPlayers.getTournamentPlayersList().forEach((mPlayer: MTournamentPlayer) => {
+            // id: string; // Club Member Id
+            // name: string; // Last, First
+            // score: number // tournament score, updated after each game
+            // clubRating: number; // club rate, set at the start of the tournament
+            // opponents: string[];
+            // lastTwoGamesColors: COLOR[] // last two game colors
+            // byeOrForfeit: number;
+            // status: boolean;
+            const tPlayer: TTournamentPlayer = {
+                id: mPlayer.getId(),
+                name: mPlayer.getName(),
+                score: mPlayer.getScore(),
+                clubRating: mPlayer.getClubMemberRating(),
+                opponents: oppponents_m_to_t(mPlayer.getOpponents()),
+                lastTwoGamesColors: colors_m_to_t(mPlayer.getGameColors()),
+                byeOrForfeit: mPlayer.getByeOrForfeit(),
+                status: mPlayer.getStatus()
+            }
+            tPlayers.push(tPlayer);
+        })
+    }
+    return tPlayers;
+};
+const oppponents_m_to_t = (mOpponents: MTournamentPlayerOpponents | undefined): string[] => {
+    const tOpponents: string[] = [];
+    mOpponents?.getDataList().forEach((mOpponent: string) => {
+        tOpponents.push(mOpponent)
+    });
+    return tOpponents;
+}
+const colors_m_to_t = (mColors: MTournamentGameColors | undefined): string[] => {
+    const tColors: string[] = [];
+    mColors?.getColorsList().forEach((mColor: string) => {
+        tColors.push(mColor)
+    });
+    return tColors;
 }
 
 export const tournament_t_to_m = (t: TTournament): MTournament => {

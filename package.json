@@ -16,6 +16,7 @@
     "run-c-deleteCM": "ts-node src/grpc/client/index  deleteCM",
     "run-c-createT": "ts-node src/grpc/client/index  createT",
     "run-c-readOneT": "ts-node src/grpc/client/index  readOneT",
+    "run-c-readAllT": "ts-node src/grpc/client/index  readAllT",
     "proto": "sh src/grpc/proto/build.sh",
     "server": "ts-node src/grpc/server/index.ts",
     "client": "ts-node src/grpc/client/index.ts"
