@@ -4,7 +4,7 @@ import { clubMemberClient } from "./client";
 import {t_to_m} from "../../utils/club-member-utils";
 
 // GRPC Client handler to create a Club Member
-const createClubMember = (tClubMember: TClubMember): any => {
+const clubMemberCreate = (tClubMember: TClubMember): any => {
     console.log(`client/createClubMember - Creating a record`);
     return new Promise<MClubMember>((resolve, reject) => {
         const mClubMember: MClubMember = t_to_m(tClubMember)
@@ -15,4 +15,4 @@ const createClubMember = (tClubMember: TClubMember): any => {
     });
 }
 
-export default createClubMember;
+export default clubMemberCreate;

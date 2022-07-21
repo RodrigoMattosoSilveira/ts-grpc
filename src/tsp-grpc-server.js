@@ -270,11 +270,11 @@ const saveClubMembers = (clubMemberFn, newClubMembers) => {
 function getServer(cmProto) {
     const server = new grpc.Server();
     // server.addService(clubMemberProto.RouteGuide.service, {
-    //     createClubMember: createClubMember,
-    //     readClubMember: readClubMember,
-    //     readClubMembers: readClubMembers,
-    //     updateClubMember: updateClubMember,
-    //     deleteClubMember: deleteClubMember
+    //     clubMemberCreate: clubMemberCreate,
+    //     clubMemberRead: clubMemberRead,
+    //     clubMembersRead: clubMembersRead,
+    //     clubMemberUpdate: clubMemberUpdate,
+    //     clubMemberDelete: clubMemberDelete
     // });
     server.addService(cmProto.ClubMemberService.service, {
         createClubMember: createClubMember,

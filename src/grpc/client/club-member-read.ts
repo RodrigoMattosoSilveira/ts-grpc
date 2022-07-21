@@ -2,7 +2,7 @@ import { MClubMember, MClubMemberId } from "../proto/club-member_pb";
 import { clubMemberClient } from "./client";
 
 // export const runCreateClubMember = (): void => {
-const readClubMember = (id: string): any => {
+const clubMemberRead = (id: string): any => {
     return new Promise<MClubMember>((resolve, reject) => {
         const request = new MClubMemberId();
         request.setId(id);
@@ -18,5 +18,5 @@ const readClubMember = (id: string): any => {
     });
 }
 
-export default readClubMember;
+export default clubMemberRead;
 

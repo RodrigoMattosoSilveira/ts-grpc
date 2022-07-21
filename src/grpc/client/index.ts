@@ -2,15 +2,15 @@ import shortid from "shortid";
 
 import {TClubMember, TClubMemberUpdate} from "../../types/club-member-type";
 import {MClubMember, MClubMemberEmpty} from "../proto/club-member_pb";
-import createClubMember from "./create-club-member";
-import readClubMember from "./read-club-member";
-import readClubMembers from "./read-club-members";
-import updateClubMember from "./update-club-member";
-import deleteClubMember from "./delete-club-member";
+import clubMemberCreate from "./club-member-create";
+import clubMemberRead from "./club-member-read";
+import clubMembersRead from "./club-members-read";
+import clubMemberUpdate from "./club-member-update";
+import clubMemberDelete from "./club-member-delete";
 
 import {STATUS_PLANNED} from "../../types/other";
 
-import createTournament from "./create-tournament";
+import tournamentCreate from "./tournament-create";
 import {tournament_m_to_t} from "../../utils/tournament-utils";
 
 import {
@@ -27,7 +27,7 @@ import {tournamentRead} from "./tournament-read";
 // Club Member Operations
 function runCreateClubMember(tClubMember: TClubMember) {
     console.log(`client/runCreateClubMember - Creating a record`);
-    createClubMember(tClubMember).
+    clubMemberCreate(tClubMember).
         then((newClubMember: MClubMember) => {
             console.log(`created club member: ${JSON.stringify(m_to_t(newClubMember))}`)
         }).
@@ -37,7 +37,7 @@ function runCreateClubMember(tClubMember: TClubMember) {
 }
 
 function runReadClubMember(clubMemberId: string) {
-    readClubMember(clubMemberId).
+    clubMemberRead(clubMemberId).
         then((clubMember: any) => {
             console.log(`read club member: ${JSON.stringify(m_to_t(clubMember))}`)
         }).
@@ -47,7 +47,7 @@ function runReadClubMember(clubMemberId: string) {
     }
 
 function runReadClubMembers(empty: MClubMemberEmpty): any {
-    readClubMembers(empty).
+    clubMembersRead(empty).
         then((clubMembers: any) => {
             clubMembers.forEach((clubMember: MClubMember) => {
                 console.log(`read club members: ${JSON.stringify(m_to_t(clubMember))}`)
@@ -63,7 +63,7 @@ function runUpdateClubMember(updateClubMemberU: TClubMemberUpdate) {
     const mClubMember = tUpdate_to_mUpdate(updateClubMemberU)
     // console.log(`client - runUpdateClubMember 2: ${mClubMember.toString()}`);
 
-    updateClubMember(mClubMember).
+    clubMemberUpdate(mClubMember).
         then((updatedClubMember: MClubMember) => {
             console.log(`updated club member: ${JSON.stringify(m_to_t(updatedClubMember))}`)
         }).
@@ -73,7 +73,7 @@ function runUpdateClubMember(updateClubMemberU: TClubMemberUpdate) {
 }
 
 function runDeleteClubMember(clubMemberId: string) {
-    deleteClubMember(clubMemberId).
+    clubMemberDelete(clubMemberId).
         then((deletedClubMember: MClubMember) => {
             console.log(`deactivated club member: ${JSON.stringify(m_to_t(deletedClubMember))}`)
         }).
@@ -85,7 +85,7 @@ function runDeleteClubMember(clubMemberId: string) {
 // Tournament Operations
 function runCreateTournament(tTournament: TTournament) {
     console.log(`client/runCreateTournament - Creating a record: ${JSON.stringify(tTournament)}`);
-    createTournament(tTournament).
+    tournamentCreate(tTournament).
         then((newTournament: MTournament) => {
             console.log(`created tournament: ${JSON.stringify(tournament_m_to_t(newTournament))}`)
         }).

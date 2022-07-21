@@ -2,7 +2,7 @@ import { MClubMember, MClubMemberId } from "../proto/club-member_pb";
 import { clubMemberClient } from "./client";
 
 // export const runCreateClubMember = (): void => {
-const deleteClubMember = (id: string): any => {
+const clubMemberDelete = (id: string): any => {
     return new Promise<MClubMember>((resolve, reject) => {
         const deleteClubMember = new MClubMemberId();
         deleteClubMember.setId(id);
@@ -14,4 +14,4 @@ const deleteClubMember = (id: string): any => {
     });
 }
 
-export default deleteClubMember;
+export default clubMemberDelete;

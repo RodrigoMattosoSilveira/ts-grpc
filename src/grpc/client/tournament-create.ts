@@ -3,7 +3,7 @@ import {TTournament} from "../../types/tournament-types";
 import {MTournament, MTournamentPlayers, MTournamentRounds} from "../proto/tournament_pb";
 
 // GRPC Client handler to create a Club Member
-const createTournament = (tTournament: TTournament): any => {
+const tournamentCreate = (tTournament: TTournament): any => {
     console.log(`client/createTournament - Creating a record: ${JSON.stringify(tTournament)}`);
     return new Promise<MTournament>((resolve, reject) => {
         const mTournament: MTournament = new MTournament();
@@ -28,4 +28,4 @@ const createTournament = (tTournament: TTournament): any => {
     });
 }
 
-export default createTournament;
+export default tournamentCreate;
