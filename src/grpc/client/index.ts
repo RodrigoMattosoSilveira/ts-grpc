@@ -24,6 +24,7 @@ import {m_to_t, tUpdate_to_mUpdate} from "../../utils/club-member-utils";
 import {tournamentRead} from "./tournament-read";
 import {tournamentsRead} from "./tournaments-read";
 import {tournamentUpdate} from "./tournament-update";
+import {tournamentDelete} from "./tournament-delete";
 
 
 // Club Member Operations
@@ -128,6 +129,16 @@ function runUpdateTournament(tTournament: TTournamentUpdate): any {
         }).
         catch((error: any) => {
             console.log(`error updating tournament: ${error}`)
+        })
+}
+
+function runDeleteTournament(tournamentId: string) {
+    tournamentDelete(tournamentId).
+        then((deletedTournament: MTournament) => {
+            console.log(`client/runDeleteTournament - deactivated tournament: ${JSON.stringify(tournament_m_to_t(deletedTournament))}`)
+        }).
+        catch((error: any) => {
+            console.log(`client/runDeleteTournament - error deactivating club member: ${error}`)
         })
 }
 
@@ -267,7 +278,11 @@ function main() {
             }
             runUpdateTournament(tTournamentUpdate);
             break;
-
+        case 'deleteT':
+            console.log(`Deleting a tournament`);
+            // TODO find the best place to validate the input
+            runDeleteTournament(`vX24iYrT7`);
+            break;
         default:
             console.log('Sorry, that is not something I know how to do.');
     }

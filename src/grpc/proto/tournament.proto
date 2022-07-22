@@ -162,8 +162,8 @@ service STournament {
   rpc ReadTournaments (MTournamentEmpty) returns (stream MTournament);
   // Update a tournament
   rpc UpdateTournament (MTournamentUpdate) returns (MTournament);
-//  // Delete a tournament
-//  rpc DeleteTournament (MTournamentId) returns (MTournament);
+  // Delete a tournament
+  rpc DeleteTournament (MTournamentId) returns (MTournament);
 //  // Start tournament
 //  rpc StartTournament (MTournamentId) returns (MTournament);
 //  // Complete tournament

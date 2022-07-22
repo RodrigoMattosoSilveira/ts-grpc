@@ -7,6 +7,7 @@ import {TTournament} from "../../types/tournament-types";
 import fs from "fs";
 import {tournament_t_to_m} from "../../utils/tournament-utils";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
+import {STATUS_COMPLETED} from "../../types/other";
 
 const TOURNAMENT_RAW_FN    = __dirname + '/../../../data/tournaments-raw.json';
 const TOURNAMENT_EDITED_FN = __dirname + '/../../../data/tournaments-edited.json';
@@ -147,8 +148,33 @@ export class TournamentServices implements ISTournamentServer {
 
         }
     };
-    // // Delete a tournament
-    // deleteTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>) {};
+    // Delete a tournament
+    deleteTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>) {
+        console.log(`server/deleteTournament: ${call.request.toString()}`);
+        const tournamentId: string = call.request.getId();
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN);
+        const tournamentIndex: number = tournaments.findIndex((tournament: TTournament) => {
+            return tournament.id === tournamentId;
+        });
+        if (tournamentIndex === -1) {
+            const error: {name: string, message: string} = {
+                name: "Tournament not found",
+                message: `server/deleteTournament - Tournament ID ${tournamentId} does not exist.`,
+            };
+            callback(error, null);
+            return;
+        }
+        // Delete the tournament; we do not delete a tournament, but disable it
+        tournaments[tournamentIndex][`status`] = STATUS_COMPLETED;
+
+        // Save the updated tournament
+        this.saveTournaments(TOURNAMENT_EDITED_FN, tournaments)
+
+        const mTournament = tournament_t_to_m(tournaments[tournamentIndex])
+        console.log(`server/deleteTournament: name: ${mTournament.getName()} (id: ${mTournament.getId()}).`);
+        callback(null, mTournament);
+        return;
+    }
     // // Start tournament
     // startTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>);
     // // Complete tournament

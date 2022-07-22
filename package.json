@@ -18,6 +18,7 @@
     "run-c-readOneT": "ts-node src/grpc/client/index  readOneT",
     "run-c-readAllT": "ts-node src/grpc/client/index  readAllT",
     "run-c-updateT": "ts-node src/grpc/client/index  updateT",
+    "run-c-deleteT": "ts-node src/grpc/client/index  deleteT",
     "proto": "sh src/grpc/proto/build.sh",
     "server": "ts-node src/grpc/server/index.ts",
     "client": "ts-node src/grpc/client/index.ts"
