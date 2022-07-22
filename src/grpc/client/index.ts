@@ -1,7 +1,7 @@
 import shortid from "shortid";
 
 import {TClubMember, TClubMemberUpdate} from "../../types/club-member-type";
-import {MClubMember, MClubMemberEmpty} from "../proto/club-member_pb";
+import {MClubMember} from "../proto/club-member_pb";
 import clubMemberCreate from "./club-member-create";
 import clubMemberRead from "./club-member-read";
 import clubMembersRead from "./club-members-read";
@@ -41,7 +41,7 @@ function runCreateClubMember(tClubMember: TClubMember) {
 
 function runReadClubMember(clubMemberId: string) {
     clubMemberRead(clubMemberId).
-        then((clubMember: any) => {
+        then((clubMember: MClubMember) => {
             console.log(`read club member: ${JSON.stringify(m_to_t(clubMember))}`)
         }).
         catch((error: any) => {
@@ -49,9 +49,9 @@ function runReadClubMember(clubMemberId: string) {
         })
     }
 
-function runReadClubMembers(empty: MClubMemberEmpty): any {
-    clubMembersRead(empty).
-        then((clubMembers: any) => {
+function runReadClubMembers(): any {
+    clubMembersRead().
+        then((clubMembers: MClubMember[]) => {
             clubMembers.forEach((clubMember: MClubMember) => {
                 console.log(`read club members: ${JSON.stringify(m_to_t(clubMember))}`)
             })
@@ -221,7 +221,7 @@ function main() {
             break;
         case 'readAllCM':
             console.log(`Reading all club members`);
-            runReadClubMembers(new MClubMemberEmpty());
+            runReadClubMembers();
             break;
         case 'updateCM':
             console.log(`Updating a club member`);
