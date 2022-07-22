@@ -2,9 +2,15 @@ import {
     MTournament, MTournamentGame, MTournamentGameColors, MTournamentGames,
     MTournamentPlayer,
     MTournamentPlayerOpponents,
-    MTournamentPlayers, MTournamentRound, MTournamentRounds
+    MTournamentPlayers, MTournamentRound, MTournamentRounds, MTournamentUpdate
 } from "../grpc/proto/tournament_pb";
-import {TTournament, TTournamentGame, TTournamentPlayer, TTournamentRound} from "../types/tournament-types";
+import {
+    TTournament,
+    TTournamentGame,
+    TTournamentPlayer,
+    TTournamentRound,
+    TTournamentUpdate
+} from "../types/tournament-types";
 
 /**
  * Returns a Tournament object
@@ -150,4 +156,47 @@ const tournamentGames_t_to_m = (games: TTournamentGame[]): MTournamentGames => {
         mGames.addGames(mGame)
     })
     return mGames;
+}
+
+/**
+ * Returns a GRPC Tournament Update object
+ * @param t, a Tournament object, with optional attributes
+ */
+export const tournamentUpdate_t_to_m = (t: TTournamentUpdate): MTournamentUpdate => {
+    const m: MTournamentUpdate = new MTournamentUpdate();
+    m.setId(t.id);
+    if (t['director']) {
+        m.setDirector(t.director);
+    }
+    if (t['name']) {
+        m.setName(t.name);
+    }
+    if (t['start']) {
+        m.setStart(t.start);
+    }
+    if (t['end']) {
+        m.setEnd(t.end);
+    }
+    if (t['maxPlayers']) {
+        m.setMaxPlayers(t.maxPlayers);
+    }
+    if (t['type']) {
+        m.setType(t.type);
+    }
+    if (t['numberOfRounds']) {
+        m.setNumberOfRounds(t.numberOfRounds);
+    }
+    if (t['winPoints']) {
+        m.setWinPoints(t.winPoints);
+    }
+    if (t['drawPoints']) {
+        m.setDrawPoints(t.drawPoints);
+    }
+    if (t['lossPoints']) {
+        m.setLossPoints(t.lossPoints);
+    }
+    if (t['status']) {
+        m.setStatus(t.status);
+    }
+    return m;
 }

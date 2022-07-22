@@ -1,10 +1,9 @@
 import {ISTournamentServer} from "../proto/tournament_grpc_pb";
 import {sendUnaryData, ServerUnaryCall, ServerWritableStream} from "@grpc/grpc-js";
 import {
-    MTournament, MTournamentId,
+    MTournament, MTournamentId, MTournamentUpdate,
 } from "../proto/tournament_pb";
 import {TTournament} from "../../types/tournament-types";
-import {TClubMember} from "../../types/club-member-type";
 import fs from "fs";
 import {tournament_t_to_m} from "../../utils/tournament-utils";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
@@ -78,8 +77,76 @@ export class TournamentServices implements ISTournamentServer {
         call.end();
         return;
     }
-    // // Update a tournament
-    // uUpdateTournament (call: ServerUnaryCall<MTournamentUpdate, any>, callback: sendUnaryData<MTournament>) {};
+    /**
+     * Update a tournament - we update only director, name, start, end, maxPlayers, type, numberOfRounds, winPoints,
+     *   drawPoints, lossPoints, and status
+     *
+     * - See other methods to update: i) players, their opponents and colors, and status; ii) rounds, their games and
+     *   status, and iii) games, their results and status
+     * @param call
+     * @param callback
+     */
+    updateTournament (call: ServerUnaryCall<MTournamentUpdate, any>, callback: sendUnaryData<MTournament>) {
+        console.log(`server/updateTournament: ${call.request.toString()}`);
+        const tTournamentId: string = call.request.getId();
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN);
+        const tTournamentIndex: number = tournaments.findIndex((tournament: TTournament) => {
+            return tournament.id === tTournamentId;
+        });
+        if (tTournamentIndex === -1) {
+            // send reply indicating we did not fund the target club member
+            const error: {name: string, message: string} = {
+                name: `Tournament not found`,
+                message: `server/updateTournament - tournament id ${tTournamentId} not found`
+            };
+            callback(error, null);
+            return;
+        }
+        else {
+            const tTournament: TTournament = tournaments[tTournamentIndex];
+            if (call.request.hasDirector()) {
+                tTournament['director'] = <string>call.request.getDirector();
+            }
+            if (call.request.hasName()) {
+                tTournament['name'] = <string>call.request.getName();
+            }
+            if (call.request.hasStart()) {
+                tTournament['start'] = <string>call.request.getDirector();
+            }
+            if (call.request.hasEnd()) {
+                tTournament['end'] = <string>call.request.getDirector();
+            }
+            if (call.request.hasMaxPlayers()) {
+                tTournament['maxPlayers'] = <number>call.request.getMaxPlayers();
+            }
+            if (call.request.hasType()) {
+                tTournament['type'] = <string>call.request.getType();
+            }
+            if (call.request.hasNumberOfRounds()) {
+                tTournament['numberOfRounds'] = <number>call.request.getNumberOfRounds();
+            }
+            if (call.request.hasWinPoints()) {
+                tTournament['winPoints'] = <number>call.request.getWinPoints();
+            }
+            if (call.request.hasDrawPoints()) {
+                tTournament['drawPoints'] = <number>call.request.getDrawPoints();
+            }
+            if (call.request.hasLossPoints()) {
+                tTournament['lossPoints'] = <number>call.request.getLossPoints();
+            }
+            if (call.request.hasStatus()) {
+                tTournament['status'] = <string>call.request.getStatus();
+            }
+            // Save the updated tournament
+            this.saveTournaments(TOURNAMENT_EDITED_FN, tournaments)
+
+            // send reply with updated club member
+            const mTournament: MTournament = tournament_t_to_m(tTournament);
+            console.log(`server/updateTournament: updated tournament ${mTournament.toString()})\n`);
+            callback(null, mTournament);
+
+        }
+    };
     // // Delete a tournament
     // deleteTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>) {};
     // // Start tournament
@@ -149,10 +216,10 @@ export class TournamentServices implements ISTournamentServer {
     }
 
     // Save club members
-    saveTournaments = (tournamentFn: string, newClubMembers: TClubMember[]) => {
+    saveTournaments = (tournamentFn: string, tTournaments: TTournament[]) => {
         try {
             const fd = fs.openSync(tournamentFn, 'w+', 0o666)
-            fs.writeSync(fd, JSON.stringify(newClubMembers));
+            fs.writeSync(fd, JSON.stringify(tTournaments));
             fs.closeSync(fd);
         } catch (err) {
             console.log(err);

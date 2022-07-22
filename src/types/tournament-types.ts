@@ -55,6 +55,21 @@ export type TTournament = {
     rounds: TTournamentRound[];
     status: STATUS
 }
+export type TTournamentUpdate = {
+    id: string;
+    director?: string; // Club Member ID
+    name?: string;
+    start?: string;
+    end?: string;
+    maxPlayers?: number;
+    type?: string;
+    numberOfRounds?: number;
+    winPoints?: number;
+    drawPoints?: number;
+    lossPoints?: number;
+    status?: STATUS
+}
+
 
 export type TOURNAMENT_SCORE = number;
 export const TOURNAMENT_SCORE_WIN: TOURNAMENT_SCORE = 3;

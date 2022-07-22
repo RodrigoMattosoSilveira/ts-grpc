@@ -11,18 +11,19 @@ import clubMemberDelete from "./club-member-delete";
 import {STATUS_PLANNED} from "../../types/other";
 
 import tournamentCreate from "./tournament-create";
-import {tournament_m_to_t} from "../../utils/tournament-utils";
+import {tournament_m_to_t, tournamentUpdate_t_to_m} from "../../utils/tournament-utils";
 
 import {
     TOURNAMENT_SCORE_DRAW, TOURNAMENT_SCORE_LOSS,
     TOURNAMENT_SCORE_WIN,
     TOURNAMENT_TYPE_SWISS,
-    TTournament
+    TTournament, TTournamentUpdate
 } from "../../types/tournament-types";
 import {MTournament, MTournamentEmpty} from "../proto/tournament_pb";
 import {m_to_t, tUpdate_to_mUpdate} from "../../utils/club-member-utils";
 import {tournamentRead} from "./tournament-read";
 import {tournamentsRead} from "./tournaments-read";
+import {tournamentUpdate} from "./tournament-update";
 
 
 // Club Member Operations
@@ -115,6 +116,19 @@ function runReadTournaments(empty: MTournamentEmpty): any {
         catch((error: any) => {
             console.log(`error reading tournaments: ${error}`)
         });
+}
+
+function runUpdateTournament(tTournament: TTournamentUpdate): any {
+    console.log(`client/runUpdateTournament updating tournament: ${JSON.stringify(tTournament)}\n`);
+    const mTournamentUpdate = tournamentUpdate_t_to_m(tTournament)
+
+    tournamentUpdate(mTournamentUpdate).
+        then((mTournament: MTournament) => {
+            console.log(`updated tournament: ${JSON.stringify(tournament_m_to_t(mTournament))}`)
+        }).
+        catch((error: any) => {
+            console.log(`error updating tournament: ${error}`)
+        })
 }
 
 // TODO re-integrate them into the flow, as close to the flow start as possible
@@ -244,6 +258,16 @@ function main() {
             console.log(`Reading all tournaments`);
             runReadTournaments(new MTournamentEmpty());
             break;
+        case 'updateT':
+            console.log(`Updating a tournament`);
+            // TODO find the best place to validate the input
+            const tTournamentUpdate: TTournamentUpdate = {
+                "id": "vX24iYrT7",
+                "winPoints": 2
+            }
+            runUpdateTournament(tTournamentUpdate);
+            break;
+
         default:
             console.log('Sorry, that is not something I know how to do.');
     }
