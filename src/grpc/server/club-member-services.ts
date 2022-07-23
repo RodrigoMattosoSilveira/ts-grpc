@@ -11,22 +11,35 @@ import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import * as fs from "fs";
 import {m_to_t, t_to_m} from "../../utils/club-member-utils";
 
-const CLUB_MEMBER_RAW_FN    = __dirname + '/../../../data/club-members-raw.json';
-const CLUB_MEMBER_EDITED_FN = __dirname + '/../../../data/club-members-edited.json';
+let CLUB_MEMBERS_RAW_FN: string
+if (process.env.CLUB_MEMBERS_RAW_FN) {
+    CLUB_MEMBERS_RAW_FN = process.env.CLUB_MEMBERS_RAW_FN
+} else {
+    throw new Error("CLUB_MEMBERS_RAW_FN environment variable is not set")
+}
+
+let CLUB_MEMBERS_EDITED_FN: string
+if (process.env.CLUB_MEMBERS_EDITED_FN) {
+    CLUB_MEMBERS_EDITED_FN = process.env.CLUB_MEMBERS_EDITED_FN
+} else {
+    throw new Error("CLUB_MEMBERS_EDITED_FN environment variable is not set")
+}
+
+
 
 export class ClubMemberServices implements ISClubMemberServer {
     createClubMember(call: ServerUnaryCall<MClubMember, any>, callback: sendUnaryData<MClubMember>) {
         console.log(`server/createClubMember - Creating a record`);
         const clubMemberT: TClubMember = m_to_t(call.request)
-        const clubMembers = [...this.getClubMembers(CLUB_MEMBER_RAW_FN), clubMemberT];
-        this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers);
+        const clubMembers = [...this.getClubMembers(CLUB_MEMBERS_RAW_FN), clubMemberT];
+        this.saveClubMembers(CLUB_MEMBERS_EDITED_FN, clubMembers);
         const clubMemberGrpcObject = t_to_m(clubMemberT);
         callback(null, clubMemberGrpcObject);
         return
     }
     readClubMember(call: ServerUnaryCall<MClubMemberId, any>, callback: sendUnaryData<MClubMember>) {
         const clubMemberId: string = call.request.getId();
-        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBER_RAW_FN)
+        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBERS_RAW_FN)
         const clubMember = clubMembers.find((cm: TClubMember) => cm.id === clubMemberId);
 
         if (!clubMember) {
@@ -46,7 +59,7 @@ export class ClubMemberServices implements ISClubMemberServer {
     readClubMembers(call: ServerWritableStream<Empty, any>) {
         console.log(`readClubMembers: streaming all club members.`);
 
-        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBER_RAW_FN)
+        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBERS_RAW_FN)
         clubMembers.forEach((clubMember: TClubMember) => {
 
             const clubMemberGrpcObject = t_to_m(clubMember)
@@ -58,7 +71,7 @@ export class ClubMemberServices implements ISClubMemberServer {
     }
     updateClubMember(call: ServerUnaryCall<MClubMemberUpdate, any>, callback: sendUnaryData<MClubMember>) {
         console.log(`server - updateClubMember: ${call.request.toString()}`);
-        const clubMembers = this.getClubMembers(CLUB_MEMBER_RAW_FN);
+        const clubMembers = this.getClubMembers(CLUB_MEMBERS_RAW_FN);
 
         const targetClubMemberId: string = call.request.getId();
         const targetClubMember: TClubMember = clubMembers.find((clubMember: TClubMember) => {
@@ -97,7 +110,7 @@ export class ClubMemberServices implements ISClubMemberServer {
                 targetClubMember['status'] = <boolean>call.request.getStatus();
             }
             // Save the updated club members
-            this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
+            this.saveClubMembers(CLUB_MEMBERS_EDITED_FN, clubMembers)
 
             // send reply with updated club member
             const mClubMember: MClubMember = t_to_m(targetClubMember);
@@ -107,7 +120,7 @@ export class ClubMemberServices implements ISClubMemberServer {
     }
     deleteClubMember(call: ServerUnaryCall<MClubMemberId, any>, callback: sendUnaryData<MClubMember>) {
         const targetClubMemberId: string = call.request.getId();
-        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBER_RAW_FN)
+        const clubMembers: TClubMember[] = this.getClubMembers(CLUB_MEMBERS_RAW_FN)
         const targetClubMemberIndex = clubMembers.findIndex(clubMember => {
             return clubMember.id === targetClubMemberId;
         })
@@ -123,7 +136,7 @@ export class ClubMemberServices implements ISClubMemberServer {
         clubMembers[targetClubMemberIndex][`status`] = false;
 
         // save the updated club members
-        this.saveClubMembers(CLUB_MEMBER_EDITED_FN, clubMembers)
+        this.saveClubMembers(CLUB_MEMBERS_EDITED_FN, clubMembers)
 
         const clubMemberGrpcObject = t_to_m(clubMembers[targetClubMemberIndex])
         console.log(`deleteClubMember: returning ${clubMemberGrpcObject.getFirst()} (id: ${clubMemberGrpcObject.getId()}).`);

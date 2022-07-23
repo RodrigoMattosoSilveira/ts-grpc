@@ -20,7 +20,7 @@ import {
     TTournament, TTournamentUpdate
 } from "../../types/tournament-types";
 import {MTournament, MTournamentEmpty} from "../proto/tournament_pb";
-import {m_to_t, tUpdate_to_mUpdate} from "../../utils/club-member-utils";
+import {m_to_t} from "../../utils/club-member-utils";
 import {tournamentRead} from "./tournament-read";
 import {tournamentsRead} from "./tournaments-read";
 import {tournamentUpdate} from "./tournament-update";
@@ -61,17 +61,15 @@ function runReadClubMembers(): any {
         });
 }
 
-function runUpdateClubMember(updateClubMemberU: TClubMemberUpdate) {
-    // console.log(`client - runUpdateClubMember - 1: ${JSON.stringify(clubMember)}`);
-    const mClubMember = tUpdate_to_mUpdate(updateClubMemberU)
-    // console.log(`client - runUpdateClubMember 2: ${mClubMember.toString()}`);
+function runUpdateClubMember(tClubMemberUpdate: TClubMemberUpdate) {
+    console.log(`client/runUpdateClubMember - Updating: ${JSON.stringify(tClubMemberUpdate)}`);
 
-    clubMemberUpdate(mClubMember).
+    clubMemberUpdate(tClubMemberUpdate).
         then((updatedClubMember: MClubMember) => {
-            console.log(`updated club member: ${JSON.stringify(m_to_t(updatedClubMember))}`)
+            console.log(`client/runUpdateClubMember: ${JSON.stringify(m_to_t(updatedClubMember))}`)
         }).
         catch((error: any) => {
-            console.log(`error updating club member: ${error}`)
+            console.log(`client/runUpdateClubMember - error updating club member: ${error}`)
         })
 }
 
@@ -81,7 +79,7 @@ function runDeleteClubMember(clubMemberId: string) {
             console.log(`deactivated club member: ${JSON.stringify(m_to_t(deletedClubMember))}`)
         }).
         catch((error: any) => {
-            console.log(`error deactivaating club member: ${error}`)
+            console.log(`error deactivating club member: ${error}`)
         })
 }
 

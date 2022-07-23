@@ -9,8 +9,23 @@ import {tournament_t_to_m} from "../../utils/tournament-utils";
 import {Empty} from "google-protobuf/google/protobuf/empty_pb";
 import {STATUS_COMPLETED} from "../../types/other";
 
-const TOURNAMENT_RAW_FN    = __dirname + '/../../../data/tournaments-raw.json';
-const TOURNAMENT_EDITED_FN = __dirname + '/../../../data/tournaments-edited.json';
+// const config =  require('../../../config/config');
+// console.log(`CLUB_MEMBERS_RAW_FN=${config.CLUB_MEMBERS_RAW_FN}`);
+
+// https://stackoverflow.com/questions/65296563/type-undefined-is-not-assignable-to-type-string-string
+let TOURNAMENTS_RAW_FN: string
+if (process.env.TOURNAMENTS_RAW_FN) {
+    TOURNAMENTS_RAW_FN = process.env.TOURNAMENTS_RAW_FN
+} else {
+    throw new Error("TOURNAMENTS_RAW_FN environment variable is not set")
+}
+
+let TOURNAMENTS_EDITED_FN: string
+if (process.env.TOURNAMENTS_EDITED_FN) {
+    TOURNAMENTS_EDITED_FN = process.env.TOURNAMENTS_EDITED_FN
+} else {
+    throw new Error("TOURNAMENTS_EDITED_FN environment variable is not set")
+}
 
 export class TournamentServices implements ISTournamentServer {
      /**
@@ -37,8 +52,8 @@ export class TournamentServices implements ISTournamentServer {
             rounds: [],
             status: mTournament.getStatus()
         }
-        const tournaments = [...this.getTournaments(TOURNAMENT_RAW_FN), tTournament];
-        this.saveTournaments(TOURNAMENT_EDITED_FN, tournaments);
+        const tournaments = [...this.getTournaments(TOURNAMENTS_RAW_FN), tTournament];
+        this.saveTournaments(TOURNAMENTS_EDITED_FN, tournaments);
         callback(null, mTournament);
         return
     };
@@ -46,7 +61,7 @@ export class TournamentServices implements ISTournamentServer {
     readTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>) {
         console.log(`server/readTournament - reading a record: ${call.request.getId()}\n`);
         const tournamentId: string = call.request.getId();
-        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN)
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENTS_RAW_FN)
         const tournament = tournaments.find((t: TTournament) => t.id === tournamentId);
 
         if (!tournament) {
@@ -67,7 +82,7 @@ export class TournamentServices implements ISTournamentServer {
     readTournaments(call: ServerWritableStream<Empty, any>) {
         console.log(`server/readTournaments: streaming all tournaments.`);
 
-        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN)
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENTS_RAW_FN)
         console.log(`readTournaments: returning tournament ${tournaments.length} tournamnets`);
         tournaments.forEach((tournament: TTournament) => {
 
@@ -90,7 +105,7 @@ export class TournamentServices implements ISTournamentServer {
     updateTournament (call: ServerUnaryCall<MTournamentUpdate, any>, callback: sendUnaryData<MTournament>) {
         console.log(`server/updateTournament: ${call.request.toString()}`);
         const tTournamentId: string = call.request.getId();
-        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN);
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENTS_RAW_FN);
         const tTournamentIndex: number = tournaments.findIndex((tournament: TTournament) => {
             return tournament.id === tTournamentId;
         });
@@ -139,7 +154,7 @@ export class TournamentServices implements ISTournamentServer {
                 tTournament['status'] = <string>call.request.getStatus();
             }
             // Save the updated tournament
-            this.saveTournaments(TOURNAMENT_EDITED_FN, tournaments)
+            this.saveTournaments(TOURNAMENTS_EDITED_FN, tournaments)
 
             // send reply with updated club member
             const mTournament: MTournament = tournament_t_to_m(tTournament);
@@ -152,7 +167,7 @@ export class TournamentServices implements ISTournamentServer {
     deleteTournament (call: ServerUnaryCall<MTournamentId, any>, callback: sendUnaryData<MTournament>) {
         console.log(`server/deleteTournament: ${call.request.toString()}`);
         const tournamentId: string = call.request.getId();
-        const tournaments: TTournament[] = this.getTournaments(TOURNAMENT_RAW_FN);
+        const tournaments: TTournament[] = this.getTournaments(TOURNAMENTS_RAW_FN);
         const tournamentIndex: number = tournaments.findIndex((tournament: TTournament) => {
             return tournament.id === tournamentId;
         });
@@ -168,7 +183,7 @@ export class TournamentServices implements ISTournamentServer {
         tournaments[tournamentIndex][`status`] = STATUS_COMPLETED;
 
         // Save the updated tournament
-        this.saveTournaments(TOURNAMENT_EDITED_FN, tournaments)
+        this.saveTournaments(TOURNAMENTS_EDITED_FN, tournaments)
 
         const mTournament = tournament_t_to_m(tournaments[tournamentIndex])
         console.log(`server/deleteTournament: name: ${mTournament.getName()} (id: ${mTournament.getId()}).`);
