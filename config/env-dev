@@ -1,8 +1,8 @@
-const GRPC_PORT=50051
+GRPC_PORT=50051
 
-const CLUB_MEMBERS_RAW_FN=__dirname + '/../data/dev/club-members-raw.json';
-const CLUB_MEMBERS_EDITED_FN=__dirname + '/../data/dev/club-members-edited.json';
+CLUB_MEMBERS_RAW_FN=/data/dev/club-members-raw.json
+CLUB_MEMBERS_EDITED_FN=/data/dev/club-members-edited.json
 
-const TOURNAMENT_RAW_FN=__dirname + '/../data/dev/tournaments-raw.json';
-const TOURNAMENT_EDITED_FN=__dirname + '/../data/dev/tournaments-edited.json';
+TOURNAMENTS_RAW_FN=/data/dev/tournaments-raw.json
+TOURNAMENTS_EDITED_FN=/data/dev/tournaments-edited.json
 

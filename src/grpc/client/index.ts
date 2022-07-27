@@ -44,8 +44,8 @@ function runReadClubMember(clubMemberId: string) {
         then((clubMember: MClubMember) => {
             console.log(`read club member: ${JSON.stringify(m_to_t(clubMember))}`)
         }).
-        catch((error: any) => {
-            console.log(`error reading club member: ${error}`)
+        catch((error: Error) => {
+            console.log(`client/runReadClubMember ${error.message}`);
         })
     }
 
@@ -56,8 +56,8 @@ function runReadClubMembers(): any {
                 console.log(`read club members: ${JSON.stringify(m_to_t(clubMember))}`)
             })
         }).
-        catch((error: any) => {
-            console.log(`error reading club members: ${error}`)
+        catch((error: Error) => {
+            console.log(`client/runReadClubMembers ${error.message}`);
         });
 }
 
